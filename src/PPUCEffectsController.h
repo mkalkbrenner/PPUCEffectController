@@ -16,6 +16,8 @@
 
 #include "PPUCEffect.h"
 #include "PPUCEffectContainer.h"
+#include "PPUCNullEffect.h"
+#include "PPUCNullDevice.h"
 
 #ifndef EFFECT_STACK_SIZE
 #define EFFECT_STACK_SIZE 50
@@ -25,11 +27,21 @@
 class PPUCEffectsController : public PPUCEventListener {
 
 public:
-    EffectsController(String controllerType);
+    PPUCEffectsController(String controllerType) : PPUCEventListener(){
+        _eventDispatcher = new PPUCEventDispatcher();
+        _eventDispatcher->addListener(this);
 
-    EventDispatcher *eventDispatcher();
+        if (controllerType == "Teensy4.1") {
+            //UV = new UVStrip(37, _scheduler);
+        } else {
+            Serial.print("Unsupported Effects Controller: ");
+            Serial.println(controllerType);
+        }
+    }
 
-    CrossLinkDebugger *crossLinkDebugger();
+    PPUCEventDispatcher *eventDispatcher();
+
+    PPUCCrossLinkDebugger *crossLinkDebugger();
 
     void addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode);
 
@@ -39,9 +51,11 @@ public:
 
     void update();
 
+    void handleEvent(PPUCEvent* event);
+
 private:
-    EventDispatcher *_eventDispatcher;
-    CrossLinkDebugger *_crossLinkDebugger;
+    PPUCEventDispatcher *_eventDispatcher;
+    PPUCCrossLinkDebugger *_crossLinkDebugger;
 
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];
     int stackCounter = -1;

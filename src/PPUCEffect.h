@@ -25,13 +25,13 @@ public:
 
     virtual void update() = 0;
 
-    void setEventDispatcher(EventDispatcher *eD);
+    void setEventDispatcher(PPUCEventDispatcher *eD);
     void setDevice(PPUCEffectDevice* effectDevice);
 
 protected:
     void dispatch(PPUCEvent* event);
 
-    EventDispatcher *_eventDispatcher;
+    PPUCEventDispatcher *_eventDispatcher;
     PPUCEffectDevice *device;
 
     bool running = false;

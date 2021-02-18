@@ -14,8 +14,6 @@
 
 class PPUCNullEffect : public PPUCEffect {
 public:
-    PPUCNullEffect() : PPUCEffect() {}
-
     void update();
 
 };

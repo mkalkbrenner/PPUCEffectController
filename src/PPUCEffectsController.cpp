@@ -1,22 +1,10 @@
 #include "PPUCEffectsController.h"
 
-PPUCEffectsController::PPUCEffectsController(String controllerType) {
-    _eventDispatcher = new EventDispatcher();
-    _eventDispatcher->addListener(this);
-
-    if (controllerType == "Teensy4.1") {
-        //UV = new UVStrip(37, _scheduler);
-    } else {
-        Serial.print("Unsupported Effects Controller: ");
-        Serial.println(controllerType);
-    }
-}
-
-EventDispatcher *PPUCEffectsController::eventDispatcher() {
+PPUCEventDispatcher *PPUCEffectsController::eventDispatcher() {
     return _eventDispatcher;
 }
 
-CrossLinkDebugger *PPUCEffectsController::crossLinkDebugger() {
+PPUCCrossLinkDebugger *PPUCEffectsController::crossLinkDebugger() {
     return _crossLinkDebugger;
 }
 
