@@ -32,16 +32,18 @@ public:
         _eventDispatcher->addListener(this);
 
         if (controllerType == "Teensy4.1") {
-            //UV = new UVStrip(37, _scheduler);
+            _nullDevice = new PPUCNullDevice();
         } else {
             Serial.print("Unsupported Effects Controller: ");
             Serial.println(controllerType);
         }
     }
 
-    PPUCEventDispatcher *eventDispatcher();
+    PPUCEventDispatcher* eventDispatcher();
 
-    PPUCCrossLinkDebugger *crossLinkDebugger();
+    PPUCCrossLinkDebugger* crossLinkDebugger();
+
+    PPUCNullDevice* nullDevice();
 
     void addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode);
 
@@ -54,8 +56,9 @@ public:
     void handleEvent(PPUCEvent* event);
 
 private:
-    PPUCEventDispatcher *_eventDispatcher;
-    PPUCCrossLinkDebugger *_crossLinkDebugger;
+    PPUCEventDispatcher* _eventDispatcher;
+    PPUCCrossLinkDebugger* _crossLinkDebugger;
+    PPUCNullDevice* _nullDevice;
 
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];
     int stackCounter = -1;

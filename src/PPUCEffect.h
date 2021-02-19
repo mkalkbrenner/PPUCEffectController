@@ -25,14 +25,15 @@ public:
 
     virtual void update() = 0;
 
-    void setEventDispatcher(PPUCEventDispatcher *eD);
+    void setEventDispatcher(PPUCEventDispatcher* eD);
+
     void setDevice(PPUCEffectDevice* effectDevice);
 
 protected:
     void dispatch(PPUCEvent* event);
 
-    PPUCEventDispatcher *_eventDispatcher;
-    PPUCEffectDevice *device;
+    PPUCEventDispatcher* _eventDispatcher;
+    PPUCEffectDevice* device;
 
     bool running = false;
     int repeat = 0; // -1 is endless, 0 means play once, 3 means three times, ...

@@ -1,11 +1,15 @@
 #include "PPUCEffectsController.h"
 
-PPUCEventDispatcher *PPUCEffectsController::eventDispatcher() {
+PPUCEventDispatcher* PPUCEffectsController::eventDispatcher() {
     return _eventDispatcher;
 }
 
-PPUCCrossLinkDebugger *PPUCEffectsController::crossLinkDebugger() {
+PPUCCrossLinkDebugger* PPUCEffectsController::crossLinkDebugger() {
     return _crossLinkDebugger;
+}
+
+PPUCNullDevice* PPUCEffectsController::nullDevice() {
+    return _nullDevice;
 }
 
 void PPUCEffectsController::addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode) {
@@ -13,7 +17,7 @@ void PPUCEffectsController::addEffect(PPUCEffect* effect, PPUCEffectDevice* devi
 }
 
 void PPUCEffectsController::addEffect(PPUCEffectContainer* container) {
-    container->effect->setEventDispatcher(_eventDispatcher);
+    container->effect->setEventDispatcher(this->eventDispatcher());
     container->effect->setDevice(container->device);
     stackEffectContainers[++stackCounter] = container;
 }
@@ -24,7 +28,7 @@ void PPUCEffectsController::handleEvent(PPUCEvent* event) {
             event == stackEffectContainers[i]->event &&
             (
                 mode == stackEffectContainers[i]->mode ||
-                -1 == stackEffectContainers[i]->mode
+                -1 == stackEffectContainers[i]->mode // -1 means any mode
             )
         ) {
             for (int k = 0; k <= stackCounter; k++) {

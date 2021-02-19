@@ -14,6 +14,9 @@
 
 class PPUCNullDevice : public PPUCEffectDevice {
 public:
+
+    void on();
+
     void reset();
 
 };

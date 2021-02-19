@@ -3,8 +3,12 @@
 PPUCEffect::PPUCEffect() {
 }
 
-PPUCEffect::setEventDispatcher(PPUCEventDispatcher* eD) {
+void PPUCEffect::setEventDispatcher(PPUCEventDispatcher* eD) {
     _eventDispatcher = eD;
+}
+
+void PPUCEffect::setDevice(PPUCEffectDevice* effectDevice) {
+    device = effectDevice;
 }
 
 void PPUCEffect::dispatch(PPUCEvent* event) {
@@ -15,13 +19,13 @@ bool PPUCEffect::isRunning() {
     return running;
 }
 
-bool PPUCEffect::start(int r = 0) {
+void PPUCEffect::start(int r) {
     running = true;
     repeat = r;
     ms= millis();
 }
 
-bool PPUCEffect::stop() {
+void PPUCEffect::stop() {
     running = false;
     repeat = 0;
 }

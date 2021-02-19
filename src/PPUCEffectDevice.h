@@ -11,6 +11,10 @@
 class PPUCEffectDevice {
 public:
     virtual void reset() = 0;
+
+    virtual void on() = 0;
+
+    void off();
 };
 
 #endif
