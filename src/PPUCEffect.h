@@ -38,6 +38,7 @@ protected:
     bool running = false;
     int repeat = 0; // -1 is endless, 0 means play once, 3 means three times, ...
     unsigned long ms;
+    int stage = 0;
 };
 
 #endif

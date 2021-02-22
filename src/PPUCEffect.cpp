@@ -22,10 +22,12 @@ bool PPUCEffect::isRunning() {
 void PPUCEffect::start(int r) {
     running = true;
     repeat = r;
+    stage = 0;
     ms= millis();
 }
 
 void PPUCEffect::stop() {
     running = false;
     repeat = 0;
+    stage = 0;
 }

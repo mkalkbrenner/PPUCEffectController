@@ -8,6 +8,10 @@ PPUCCrossLinkDebugger* PPUCEffectsController::crossLinkDebugger() {
     return _crossLinkDebugger;
 }
 
+PPUCLedBuiltInDevice* PPUCEffectsController::ledBuiltInDevice() {
+    return _ledBuiltInDevice;
+}
+
 PPUCNullDevice* PPUCEffectsController::nullDevice() {
     return _nullDevice;
 }

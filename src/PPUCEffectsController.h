@@ -16,7 +16,7 @@
 
 #include "PPUCEffect.h"
 #include "PPUCEffectContainer.h"
-#include "PPUCNullEffect.h"
+#include "PPUCLedBuiltInDevice.h"
 #include "PPUCNullDevice.h"
 
 #ifndef EFFECT_STACK_SIZE
@@ -32,6 +32,7 @@ public:
         _eventDispatcher->addListener(this);
 
         if (controllerType == "Teensy4.1") {
+            _ledBuiltInDevice = new PPUCLedBuiltInDevice();
             _nullDevice = new PPUCNullDevice();
         } else {
             Serial.print("Unsupported Effects Controller: ");
@@ -42,6 +43,8 @@ public:
     PPUCEventDispatcher* eventDispatcher();
 
     PPUCCrossLinkDebugger* crossLinkDebugger();
+
+    PPUCLedBuiltInDevice* ledBuiltInDevice();
 
     PPUCNullDevice* nullDevice();
 
@@ -58,6 +61,7 @@ public:
 private:
     PPUCEventDispatcher* _eventDispatcher;
     PPUCCrossLinkDebugger* _crossLinkDebugger;
+    PPUCLedBuiltInDevice* _ledBuiltInDevice;
     PPUCNullDevice* _nullDevice;
 
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];
