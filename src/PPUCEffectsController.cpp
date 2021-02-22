@@ -4,10 +4,6 @@ PPUCEventDispatcher* PPUCEffectsController::eventDispatcher() {
     return _eventDispatcher;
 }
 
-PPUCCrossLinkDebugger* PPUCEffectsController::crossLinkDebugger() {
-    return _crossLinkDebugger;
-}
-
 PPUCLedBuiltInDevice* PPUCEffectsController::ledBuiltInDevice() {
     return _ledBuiltInDevice;
 }

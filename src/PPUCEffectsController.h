@@ -42,8 +42,6 @@ public:
 
     PPUCEventDispatcher* eventDispatcher();
 
-    PPUCCrossLinkDebugger* crossLinkDebugger();
-
     PPUCLedBuiltInDevice* ledBuiltInDevice();
 
     PPUCNullDevice* nullDevice();
@@ -60,7 +58,6 @@ public:
 
 private:
     PPUCEventDispatcher* _eventDispatcher;
-    PPUCCrossLinkDebugger* _crossLinkDebugger;
     PPUCLedBuiltInDevice* _ledBuiltInDevice;
     PPUCNullDevice* _nullDevice;
 
