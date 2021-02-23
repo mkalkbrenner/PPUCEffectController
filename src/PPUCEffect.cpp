@@ -34,6 +34,11 @@ void PPUCEffect::updateMillis() {
 
 void PPUCEffect::stop() {
     running = false;
-    repeat = 0;
     stage = 0;
+    if (repeat > 0) {
+        start(--repeat);
+    }
+    else if (repeat == -1) {
+        start(-1);
+    }
 }

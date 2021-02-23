@@ -39,7 +39,7 @@ protected:
     PPUCEffectDevice* device;
 
     bool running = false;
-    int repeat = 0; // -1 is endless, 0 means play once, 3 means three times, ...
+    int repeat = 0; // -1 is endless, 0 means play once, 3 means repeat three times, ...
     unsigned long ms;
     unsigned long _ms;
     int stage = 0;
