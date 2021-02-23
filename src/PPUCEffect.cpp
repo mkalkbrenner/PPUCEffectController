@@ -20,10 +20,16 @@ bool PPUCEffect::isRunning() {
 }
 
 void PPUCEffect::start(int r) {
+    //Serial.println("effect started");
     running = true;
     repeat = r;
     stage = 0;
-    ms= millis();
+    ms = 0;
+    _ms = millis();
+}
+
+void PPUCEffect::updateMillis() {
+    ms = millis() - _ms;
 }
 
 void PPUCEffect::stop() {

@@ -21,9 +21,12 @@ public:
     bool isRunning();
 
     void start(int repeat = 0);
+
     void stop();
 
     virtual void update() = 0;
+
+    void updateMillis();
 
     void setEventDispatcher(PPUCEventDispatcher* eD);
 
@@ -38,6 +41,7 @@ protected:
     bool running = false;
     int repeat = 0; // -1 is endless, 0 means play once, 3 means three times, ...
     unsigned long ms;
+    unsigned long _ms;
     int stage = 0;
 };
 

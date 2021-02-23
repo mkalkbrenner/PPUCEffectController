@@ -34,6 +34,7 @@ public:
         if (controllerType == "Teensy4.1") {
             _ledBuiltInDevice = new PPUCLedBuiltInDevice();
             _nullDevice = new PPUCNullDevice();
+            digitalWrite(LED_BUILTIN, HIGH);
         } else {
             Serial.print("Unsupported Effects Controller: ");
             Serial.println(controllerType);

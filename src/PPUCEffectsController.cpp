@@ -25,7 +25,9 @@ void PPUCEffectsController::addEffect(PPUCEffectContainer* container) {
 void PPUCEffectsController::handleEvent(PPUCEvent* event) {
     for (int i = 0; i <= stackCounter; i++) {
         if (
-            event == stackEffectContainers[i]->event &&
+            event->sourceId == stackEffectContainers[i]->event->sourceId &&
+            event->eventId == stackEffectContainers[i]->event->eventId &&
+            event->value == stackEffectContainers[i]->event->value &&
             (
                 mode == stackEffectContainers[i]->mode ||
                 -1 == stackEffectContainers[i]->mode // -1 means any mode
@@ -34,7 +36,7 @@ void PPUCEffectsController::handleEvent(PPUCEvent* event) {
             for (int k = 0; k <= stackCounter; k++) {
                 if (
                     stackEffectContainers[i]->device == stackEffectContainers[k]->device &&
-                    !stackEffectContainers[k]->effect->isRunning()
+                    stackEffectContainers[k]->effect->isRunning()
                 ) {
                     if (stackEffectContainers[i]->priority > stackEffectContainers[k]->priority) {
                         stackEffectContainers[k]->effect->stop();
@@ -51,8 +53,11 @@ void PPUCEffectsController::handleEvent(PPUCEvent* event) {
 }
 
 void PPUCEffectsController::update() {
+    _eventDispatcher->update();
+
     for (int i = 0; i <= stackCounter; i++) {
         if (stackEffectContainers[i]->effect->isRunning()) {
+            stackEffectContainers[i]->effect->updateMillis();
             stackEffectContainers[i]->effect->update();
         }
     }
