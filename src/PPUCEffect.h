@@ -24,6 +24,8 @@ public:
 
     void stop();
 
+    void terminate();
+
     virtual void update() = 0;
 
     void updateMillis();

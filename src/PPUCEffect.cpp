@@ -20,7 +20,8 @@ bool PPUCEffect::isRunning() {
 }
 
 void PPUCEffect::start(int r) {
-    //Serial.println("effect started");
+    Serial.print("effect started, repeat ");
+    Serial.println(r);
     running = true;
     repeat = r;
     stage = 0;
@@ -33,12 +34,19 @@ void PPUCEffect::updateMillis() {
 }
 
 void PPUCEffect::stop() {
-    running = false;
-    stage = 0;
     if (repeat > 0) {
         start(--repeat);
     }
     else if (repeat == -1) {
         start(-1);
     }
+    else {
+       terminate();
+    }
+}
+
+void PPUCEffect::terminate() {
+    running = false;
+    stage = 0;
+    repeat = 0;
 }

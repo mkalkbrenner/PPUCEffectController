@@ -39,7 +39,7 @@ void PPUCEffectsController::handleEvent(PPUCEvent* event) {
                     stackEffectContainers[k]->effect->isRunning()
                 ) {
                     if (stackEffectContainers[i]->priority > stackEffectContainers[k]->priority) {
-                        stackEffectContainers[k]->effect->stop();
+                        stackEffectContainers[k]->effect->terminate();
                         stackEffectContainers[i]->effect->start(stackEffectContainers[i]->repeat);
                     }
                     break;
