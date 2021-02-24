@@ -22,7 +22,7 @@ public:
 
 protected:
     unsigned int delay;
-    unsigned int color;
+    uint32_t color;
 };
 
 #endif

@@ -3,9 +3,8 @@
 
 void PPUCRGBColorCycleEffect::update() {
     PPUCWS2812SerialDevice* rgbDevice = (PPUCWS2812SerialDevice*) device;
-
     if (stage == 0) {
-        color = 0;
+        color = 0x0;
         rgbDevice->on();
         ++stage;
     }
@@ -24,6 +23,7 @@ void PPUCRGBColorCycleEffect::update() {
             rgbDevice->setColor(color);
             if (color <= 0) {
                 rgbDevice->off();
+                stop();
             }
         }
     }

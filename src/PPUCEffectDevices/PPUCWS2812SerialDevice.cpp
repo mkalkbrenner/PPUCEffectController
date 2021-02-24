@@ -1,7 +1,8 @@
 #include "PPUCWS2812SerialDevice.h"
 
 void PPUCWS2812SerialDevice::on() {
-    reset();
+    leds->clear();
+    leds->setBrightness(128);
 }
 
 void PPUCWS2812SerialDevice::reset() {
@@ -9,32 +10,30 @@ void PPUCWS2812SerialDevice::reset() {
     leds->clear();
 }
 
-void PPUCWS2812SerialDevice::colorWipe(int color) {
+void PPUCWS2812SerialDevice::colorWipe(uint32_t color) {
     for (int i = 0; i < leds->numPixels(); i++) {
         leds->setPixel(i, color);
+        leds->show();
     }
-    leds->show();
 }
 
-void PPUCWS2812SerialDevice::setColor(int rgb) {
+void PPUCWS2812SerialDevice::setColor(uint32_t color) {
     for (int i = 0; i < leds->numPixels(); i++) {
-        leds->setPixel(i, rgb);
+        leds->setPixel(i, color);
     }
     leds->show();
 }
 
 void PPUCWS2812SerialDevice::setColor(byte red, byte green, byte blue) {
-    uint32_t color = leds->Color(red, green, blue);
     for (int i = 0; i < leds->numPixels(); i++) {
-        leds->setPixel(i, color);
+        leds->setPixel(i, red, green, blue);
     }
     leds->show();
 }
 
 void PPUCWS2812SerialDevice::setColor(byte red, byte green, byte blue, byte white) {
-    uint32_t color = leds->Color(red, green, blue, white);
     for (int i = 0; i < leds->numPixels(); i++) {
-        leds->setPixel(i, color);
+        leds->setPixel(i, red, green, blue, white);
     }
     leds->show();
 }

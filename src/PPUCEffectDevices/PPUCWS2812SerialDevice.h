@@ -25,9 +25,9 @@ public:
 
     void reset();
 
-    void colorWipe(int color);
+    void colorWipe(uint32_t color);
 
-    void setColor(int rgb);
+    void setColor(uint32_t color);
     void setColor(byte red, byte green, byte blue);
     void setColor(byte red, byte green, byte blue, byte white);
 
