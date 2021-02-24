@@ -33,6 +33,11 @@ void PPUCEffect::updateMillis() {
     ms = millis() - _ms;
 }
 
+void PPUCEffect::resetMillis() {
+    ms = 0;
+    _ms = millis();
+}
+
 void PPUCEffect::stop() {
     if (repeat > 0) {
         start(--repeat);

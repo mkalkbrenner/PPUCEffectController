@@ -10,7 +10,7 @@
 
 #include <Arduino.h>
 
-#include "PPUCEffectDevice.h"
+#include "../PPUCEffectDevice.h"
 
 class PPUCLedBuiltInDevice : public PPUCEffectDevice {
 public:

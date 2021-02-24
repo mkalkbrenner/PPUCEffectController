@@ -12,6 +12,10 @@ PPUCNullDevice* PPUCEffectsController::nullDevice() {
     return _nullDevice;
 }
 
+PPUCWS2812SerialDevice* PPUCEffectsController::ws2812Serial(int port) {
+    return _ws2812Serial[--port];
+}
+
 void PPUCEffectsController::addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode) {
     addEffect(new PPUCEffectContainer(effect, device, event, priority, repeat, mode));
 }
@@ -61,4 +65,10 @@ void PPUCEffectsController::update() {
             stackEffectContainers[i]->effect->update();
         }
     }
+}
+
+void PPUCEffectsController::start() {
+    _eventDispatcher->dispatch(
+        new PPUCEvent(EVENT_SOURCE_EFFECT, 1, 255)
+    );
 }

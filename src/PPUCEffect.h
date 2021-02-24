@@ -30,6 +30,8 @@ public:
 
     void updateMillis();
 
+    void resetMillis();
+
     void setEventDispatcher(PPUCEventDispatcher* eD);
 
     void setDevice(PPUCEffectDevice* effectDevice);
@@ -42,7 +44,7 @@ protected:
 
     bool running = false;
     int repeat = 0; // -1 is endless, 0 means play once, 3 means repeat three times, ...
-    unsigned long ms;
+    unsigned int ms;
     unsigned long _ms;
     int stage = 0;
 };

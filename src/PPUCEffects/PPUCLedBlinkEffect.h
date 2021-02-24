@@ -10,7 +10,7 @@
 
 #include <Arduino.h>
 
-#include "PPUCEffect.h"
+#include "../PPUCEffect.h"
 
 class PPUCLedBlinkEffect : public PPUCEffect {
 public:
