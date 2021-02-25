@@ -25,11 +25,17 @@ public:
 
     void reset();
 
+    void setBrightness(uint8_t n);
+    uint8_t getBrightness();
+
     void colorWipe(uint32_t color);
 
     void setColor(uint32_t color);
     void setColor(byte red, byte green, byte blue);
     void setColor(byte red, byte green, byte blue, byte white);
+
+    uint32_t color(uint8_t red, uint8_t green, uint8_t blue);
+    uint32_t color(uint8_t red, uint8_t green, uint8_t blue, uint8_t white);
 
 protected:
     WS2812Serial* leds;

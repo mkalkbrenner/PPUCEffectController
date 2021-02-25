@@ -22,6 +22,7 @@ bool PPUCEffect::isRunning() {
 void PPUCEffect::start(int r) {
     Serial.print("effect started, repeat ");
     Serial.println(r);
+
     running = true;
     repeat = r;
     stage = 0;
