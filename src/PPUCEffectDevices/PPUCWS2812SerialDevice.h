@@ -11,7 +11,7 @@
 #include <Arduino.h>
 #include <WS2812Serial.h>
 
-#include "../PPUCEffectDevice.h"
+#include "PPUCEffectDevice.h"
 
 class PPUCWS2812SerialDevice : public PPUCEffectDevice {
 public:

@@ -13,6 +13,7 @@
 #include <PPUCEventListener.h>
 #include <PPUCEvent.h>
 #include <PPUCCrossLinkDebugger.h>
+#include <WS2812FX.h>
 
 #include "PPUCEffect.h"
 #include "PPUCEffectContainer.h"
@@ -71,13 +72,13 @@ public:
             _ledBuiltInDevice = new PPUCLedBuiltInDevice();
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
-            _ws2812Serial[0] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds1, ws2812DisplayMemory1, ws2812DrawingMemory1, 1, ws2812Type1));
-            _ws2812Serial[1] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds2, ws2812DisplayMemory2, ws2812DrawingMemory2, 8, ws2812Type2));
-            _ws2812Serial[2] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds3, ws2812DisplayMemory3, ws2812DrawingMemory3, 14, ws2812Type3));
-            _ws2812Serial[3] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds4, ws2812DisplayMemory4, ws2812DrawingMemory4, 17, ws2812Type4));
-            _ws2812Serial[4] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds5, ws2812DisplayMemory5, ws2812DrawingMemory5, 20, ws2812Type5));
-            _ws2812Serial[5] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds6, ws2812DisplayMemory6, ws2812DrawingMemory6, 24, ws2812Type6));
-            _ws2812Serial[6] = new PPUCWS2812SerialDevice(new WS2812Serial(ws2812NumLeds7, ws2812DisplayMemory7, ws2812DrawingMemory7, 29, ws2812Type7));
+            _ws2812Serial[0] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds1, ws2812DisplayMemory1, ws2812DrawingMemory1, 1, ws2812Type1));
+            _ws2812Serial[1] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds2, ws2812DisplayMemory2, ws2812DrawingMemory2, 8, ws2812Type2));
+            _ws2812Serial[2] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds3, ws2812DisplayMemory3, ws2812DrawingMemory3, 14, ws2812Type3));
+            _ws2812Serial[3] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds4, ws2812DisplayMemory4, ws2812DrawingMemory4, 17, ws2812Type4));
+            _ws2812Serial[4] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds5, ws2812DisplayMemory5, ws2812DrawingMemory5, 20, ws2812Type5));
+            _ws2812Serial[5] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds6, ws2812DisplayMemory6, ws2812DrawingMemory6, 24, ws2812Type6));
+            _ws2812Serial[6] = new PPUCWS2812SerialDevice(new WS2812FX(ws2812NumLeds7, ws2812DisplayMemory7, ws2812DrawingMemory7, 29, ws2812Type7));
         } else {
             Serial.print("Unsupported Effects Controller: ");
             Serial.println(controllerType);
