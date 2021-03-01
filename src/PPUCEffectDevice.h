@@ -14,7 +14,7 @@ public:
 
     virtual void on() = 0;
 
-    void off();
+    virtual void off();
 };
 
 #endif

@@ -1,5 +1,4 @@
 #include "PPUCRGBColorCycleEffect.h"
-#include "../PPUCEffectDevices/PPUCWS2812SerialDevice.h"
 
 void PPUCRGBColorCycleEffect::update() {
     PPUCWS2812SerialDevice* rgbDevice = (PPUCWS2812SerialDevice*) device;

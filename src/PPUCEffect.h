@@ -20,11 +20,11 @@ public:
 
     bool isRunning();
 
-    void start(int repeat = 0);
+    virtual void start(int repeat = 0);
 
-    void stop();
+    virtual void stop();
 
-    void terminate();
+    virtual void terminate();
 
     virtual void update() = 0;
 
@@ -34,7 +34,7 @@ public:
 
     void setEventDispatcher(PPUCEventDispatcher* eD);
 
-    void setDevice(PPUCEffectDevice* effectDevice);
+    virtual void setDevice(PPUCEffectDevice* effectDevice);
 
 protected:
     void dispatch(PPUCEvent* event);

@@ -10,6 +10,10 @@ void PPUCWS2812SerialDevice::reset() {
     leds->clear();
 }
 
+WS2812Serial* PPUCWS2812SerialDevice::getWS2812Serial() {
+    return leds;
+}
+
 void PPUCWS2812SerialDevice::setBrightness(uint8_t n) {
     leds->setBrightness(n);
 }

@@ -12,8 +12,17 @@ PPUCNullDevice* PPUCEffectsController::nullDevice() {
     return _nullDevice;
 }
 
-PPUCWS2812SerialDevice* PPUCEffectsController::ws2812Serial(int port) {
-    return _ws2812Serial[--port];
+PPUCWS2812SerialDevice* PPUCEffectsController::ws2812SerialDevice(int port) {
+    return _ws2812SerialDevices[--port];
+}
+
+PPUCWS2812SerialDevice* PPUCEffectsController::ws2812SerialOverlayDevice(int port, int number, int firstLED, int numLEDs) {
+    WS2812FX* ws2812FX = (WS2812FX*) _ws2812SerialDevices[port]->getWS2812Serial();
+    WS2812FX* ws2812FXOverlay = (WS2812FX*) new WS2812FXOverlay(ws2812FX, firstLED, numLEDs);
+
+    _ws2812SerialOverlayDevices[--port][number] = new PPUCWS2812SerialDevice(ws2812FXOverlay);
+
+    return _ws2812SerialOverlayDevices[port][number];
 }
 
 void PPUCEffectsController::addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode) {
