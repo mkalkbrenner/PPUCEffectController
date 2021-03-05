@@ -11,7 +11,7 @@
 #include <Arduino.h>
 
 #include "../PPUCEffect.h"
-#include "../PPUCEffectDevices/PPUCWS2812SerialDevice.h"
+#include "../PPUCEffectDevices/PPUCWS2812FXDevice.h"
 
 class PPUCRGBColorCycleEffect : public PPUCEffect {
 public:

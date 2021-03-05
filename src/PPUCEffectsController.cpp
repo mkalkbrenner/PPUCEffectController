@@ -12,17 +12,28 @@ PPUCNullDevice* PPUCEffectsController::nullDevice() {
     return _nullDevice;
 }
 
-PPUCWS2812SerialDevice* PPUCEffectsController::ws2812SerialDevice(int port) {
-    return _ws2812SerialDevices[--port];
+PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port) {
+    return _ws2812FXDevices[--port][0];
 }
 
-PPUCWS2812SerialDevice* PPUCEffectsController::ws2812SerialOverlayDevice(int port, int number, int firstLED, int numLEDs) {
-    WS2812FX* ws2812FX = (WS2812FX*) _ws2812SerialDevices[port]->getWS2812Serial();
-    WS2812FX* ws2812FXOverlay = (WS2812FX*) new WS2812FXOverlay(ws2812FX, firstLED, numLEDs);
+PPUCWS2812FXDevice* PPUCEffectsController::createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED) {
+    --port;
 
-    _ws2812SerialOverlayDevices[--port][number] = new PPUCWS2812SerialDevice(ws2812FXOverlay);
+    int firstSegment = (number > 0) ? _ws2812FXDevices[port][number - 1]->getLastSegment() + 1 : 0;
 
-    return _ws2812SerialOverlayDevices[port][number];
+    _ws2812FXDevices[port][number] = new PPUCWS2812FXDevice(
+        _ws2812FXDevices[port][0]->getWS2812FX(),
+        firstLED,
+        lastLED,
+        firstSegment,
+        firstSegment + segments - 1
+   );
+
+    return _ws2812FXDevices[port][number];
+}
+
+PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port, int number) {
+    return _ws2812FXDevices[--port][number];
 }
 
 void PPUCEffectsController::addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode) {
@@ -72,6 +83,12 @@ void PPUCEffectsController::update() {
         if (stackEffectContainers[i]->effect->isRunning()) {
             stackEffectContainers[i]->effect->updateMillis();
             stackEffectContainers[i]->effect->update();
+        }
+    }
+
+    for (int i = 0; i <= 6; i++) {
+        if (ws2812FXstates[i]) {
+            _ws2812FXDevices[i][0]->getWS2812FX()->service();
         }
     }
 }

@@ -14,16 +14,16 @@
 #include <PPUCEvent.h>
 #include <PPUCCrossLinkDebugger.h>
 #include <WS2812FX.h>
-#include <WS2812FXOverlay.h>
 
 #include "PPUCEffect.h"
 #include "PPUCEffectContainer.h"
 #include "PPUCEffectDevices/PPUCLedBuiltInDevice.h"
 #include "PPUCEffectDevices/PPUCNullDevice.h"
-#include "PPUCEffectDevices/PPUCWS2812SerialDevice.h"
+#include "PPUCEffectDevices/PPUCWS2812FXDevice.h"
 #include "PPUCEffects/PPUCLedBlinkEffect.h"
 #include "PPUCEffects/PPUCNullEffect.h"
 #include "PPUCEffects/PPUCRGBColorCycleEffect.h"
+#include "PPUCEffects/PPUCWS2812FXBlink.h"
 #include "PPUCEffects/PPUCWS2812FXRainbowCycle.h"
 
 #ifndef EFFECT_STACK_SIZE
@@ -32,38 +32,31 @@
 #endif
 
 #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
-    byte        ws2812DrawingMemory1[PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory1[PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer1[PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 #if defined(PPUC_NUM_LEDS_2) && defined(PPUC_LED_TYPE_2)
-    byte        ws2812DrawingMemory2[PPUC_NUM_LEDS_2 * ((PPUC_LED_TYPE_2 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory2[PPUC_NUM_LEDS_2 * ((PPUC_LED_TYPE_2 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer2[PPUC_NUM_LEDS_2 * ((PPUC_LED_TYPE_2 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 #if defined(PPUC_NUM_LEDS_3) && defined(PPUC_LED_TYPE_3)
-    byte        ws2812DrawingMemory3[PPUC_NUM_LEDS_3 * ((PPUC_LED_TYPE_3 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory3[PPUC_NUM_LEDS_3 * ((PPUC_LED_TYPE_3 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer3[PPUC_NUM_LEDS_3 * ((PPUC_LED_TYPE_3 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 #if defined(PPUC_NUM_LEDS_4) && defined(PPUC_LED_TYPE_4)
-    byte        ws2812DrawingMemory4[PPUC_NUM_LEDS_4 * ((PPUC_LED_TYPE_4 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory4[PPUC_NUM_LEDS_4 * ((PPUC_LED_TYPE_4 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer4[PPUC_NUM_LEDS_4 * ((PPUC_LED_TYPE_4 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 #if defined(PPUC_NUM_LEDS_5) && defined(PPUC_LED_TYPE_5)
-    byte        ws2812DrawingMemory5[PPUC_NUM_LEDS_5 * ((PPUC_LED_TYPE_5 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory5[PPUC_NUM_LEDS_5 * ((PPUC_LED_TYPE_5 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer5[PPUC_NUM_LEDS_5 * ((PPUC_LED_TYPE_5 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 #if defined(PPUC_NUM_LEDS_6) && defined(PPUC_LED_TYPE_6)
-    byte        ws2812DrawingMemory6[PPUC_NUM_LEDS_6 * ((PPUC_LED_TYPE_6 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory6[PPUC_NUM_LEDS_6 * ((PPUC_LED_TYPE_6 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer6[PPUC_NUM_LEDS_6 * ((PPUC_LED_TYPE_6 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 #if defined(PPUC_NUM_LEDS_7) && defined(PPUC_LED_TYPE_7)
-    byte        ws2812DrawingMemory7[PPUC_NUM_LEDS_7 * ((PPUC_LED_TYPE_7 < 6) ? 3 : 4)];     // 3 bytes per LED for RGB, 4 bytes for RGBW
-    DMAMEM byte ws2812DisplayMemory7[PPUC_NUM_LEDS_7 * ((PPUC_LED_TYPE_7 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
+    DMAMEM byte frameBuffer7[PPUC_NUM_LEDS_7 * ((PPUC_LED_TYPE_7 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
 #endif
 
 class PPUCEffectsController : public PPUCEventListener {
@@ -78,32 +71,82 @@ public:
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
-                _ws2812SerialDevices[0] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_1, ws2812DisplayMemory1, ws2812DrawingMemory1, 1, PPUC_LED_TYPE_1));
-                ((WS2812FX*) _ws2812SerialDevices[0]->getWS2812Serial())->init();
+                _ws2812FXDevices[0][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_1, frameBuffer1, malloc(PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4)), 1, PPUC_LED_TYPE_1),
+                    0,
+                    PPUC_NUM_LEDS_1 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[0][0]->getWS2812FX()->init();
+                _ws2812FXDevices[0][0]->reset();
+                ws2812FXstates[0] = 1;
             #endif
             #if defined(PPUC_NUM_LEDS_2) && defined(PPUC_LED_TYPE_2)
-                _ws2812SerialDevices[1] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_2, ws2812DisplayMemory2, ws2812DrawingMemory2, 8, PPUC_LED_TYPE_2));
-                ((WS2812FX*) _ws2812SerialDevices[1]->getWS2812Serial())->init();
+               _ws2812FXDevices[1][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_2, frameBuffer2, malloc(PPUC_NUM_LEDS_2 * ((PPUC_LED_TYPE_2 < 6) ? 3 : 4)), 8, PPUC_LED_TYPE_2),
+                    0,
+                    PPUC_NUM_LEDS_2 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[1][0]->getWS2812FX()->init();
+                ws2812FXstates[1] = 1;
             #endif
             #if defined(PPUC_NUM_LEDS_3) && defined(PPUC_LED_TYPE_3)
-                _ws2812SerialDevices[2] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_3, ws2812DisplayMemory3, ws2812DrawingMemory3, 14, PPUC_LED_TYPE_3));
-                ((WS2812FX*) _ws2812SerialDevices[2]->getWS2812Serial())->init();
+            _ws2812FXDevices[2][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_3, frameBuffer3, malloc(PPUC_NUM_LEDS_3 * ((PPUC_LED_TYPE_3 < 6) ? 3 : 4)), 14, PPUC_LED_TYPE_3),
+                    0,
+                    PPUC_NUM_LEDS_3 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[2][0]->getWS2812FX()->init();
+                ws2812FXstates[2] = 1;
             #endif
             #if defined(PPUC_NUM_LEDS_4) && defined(PPUC_LED_TYPE_4)
-                _ws2812SerialDevices[3] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_4, ws2812DisplayMemory4, ws2812DrawingMemory4, 17, PPUC_LED_TYPE_4));
-                ((WS2812FX*) _ws2812SerialDevices[3]->getWS2812Serial())->init();
+            _ws2812FXDevices[3][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_4, frameBuffer4, malloc(PPUC_NUM_LEDS_4 * ((PPUC_LED_TYPE_4 < 6) ? 3 : 4)), 17, PPUC_LED_TYPE_4),
+                    0,
+                    PPUC_NUM_LEDS_4 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[3][0]->getWS2812FX()->init();
+                ws2812FXstates[3] = 1;
             #endif
             #if defined(PPUC_NUM_LEDS_5) && defined(PPUC_LED_TYPE_5)
-                _ws2812SerialDevices[4] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_5, ws2812DisplayMemory5, ws2812DrawingMemory5, 20, PPUC_LED_TYPE_5));
-                ((WS2812FX*) _ws2812SerialDevices[4]->getWS2812Serial())->init();
+            _ws2812FXDevices[4][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_5, frameBuffer5, malloc(PPUC_NUM_LEDS_5 * ((PPUC_LED_TYPE_5 < 6) ? 3 : 4)), 20, PPUC_LED_TYPE_5),
+                    0,
+                    PPUC_NUM_LEDS_5 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[4][0]->getWS2812FX()->init();
+                ws2812FXstates[4] = 1;
             #endif
             #if defined(PPUC_NUM_LEDS_6) && defined(PPUC_LED_TYPE_6)
-                _ws2812SerialDevices[5] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_6, ws2812DisplayMemory6, ws2812DrawingMemory6, 24, PPUC_LED_TYPE_6));
-                ((WS2812FX*) _ws2812SerialDevices[5]->getWS2812Serial())->init();
+            _ws2812FXDevices[5][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_6, frameBuffer6, malloc(PPUC_NUM_LEDS_6 * ((PPUC_LED_TYPE_6 < 6) ? 3 : 4)), 24, PPUC_LED_TYPE_6),
+                    0,
+                    PPUC_NUM_LEDS_6 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[5][0]->init();
+                ws2812FXstates[5] = 1;
             #endif
             #if defined(PPUC_NUM_LEDS_7) && defined(PPUC_LED_TYPE_7)
-                _ws2812SerialDevices[6] = new PPUCWS2812SerialDevice(new WS2812FX(PPUC_NUM_LEDS_7, ws2812DisplayMemory7, ws2812DrawingMemory7, 29, PPUC_LED_TYPE_7));
-                ((WS2812FX*) _ws2812SerialDevices[6]->getWS2812Serial())->init();
+            _ws2812FXDevices[6][0] = new PPUCWS2812FXDevice(
+                    new WS2812FX(PPUC_NUM_LEDS_7, frameBuffer7, malloc(PPUC_NUM_LEDS_7 * ((PPUC_LED_TYPE_7 < 6) ? 3 : 4)), 29, PPUC_LED_TYPE_7),
+                    0,
+                    PPUC_NUM_LEDS_7 - 1,
+                    0,
+                    0
+                );
+                _ws2812FXDevices[6][0]->getWS2812FX()->init();
+                ws2812FXstates[6] = 1;
             #endif
         } else {
             Serial.print("Unsupported Effects Controller: ");
@@ -117,11 +160,11 @@ public:
 
     PPUCNullDevice* nullDevice();
 
-    PPUCWS2812SerialDevice* ws2812SerialDevice(int port);
+    PPUCWS2812FXDevice* ws2812FXDevice(int port);
 
-    PPUCWS2812SerialDevice* ws2812SerialOverlayDevice(int port, int number, int firstLED, int numLEDs);
+    PPUCWS2812FXDevice* createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED);
 
-    PPUCWS2812SerialDevice* ws2812SerialOverlayDevice(int port, int number);
+    PPUCWS2812FXDevice* ws2812FXDevice(int port, int number);
 
     void addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode);
 
@@ -139,9 +182,8 @@ private:
     PPUCEventDispatcher* _eventDispatcher;
     PPUCLedBuiltInDevice* _ledBuiltInDevice;
     PPUCNullDevice* _nullDevice;
-    PPUCWS2812SerialDevice* _ws2812SerialDevices[7];
-    PPUCWS2812SerialDevice* _ws2812SerialOverlayDevices[7][10];
-
+    PPUCWS2812FXDevice* _ws2812FXDevices[7][10];
+    bool ws2812FXstates[7] = {0, 0, 0, 0, 0, 0, 0};
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];
     int stackCounter = -1;
 
