@@ -133,7 +133,7 @@ public:
                     0,
                     0
                 );
-                _ws2812FXDevices[5][0]->init();
+                _ws2812FXDevices[5][0]->getWS2812FX()->init();
                 ws2812FXstates[5] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_7) && defined(PPUC_LED_TYPE_7)
