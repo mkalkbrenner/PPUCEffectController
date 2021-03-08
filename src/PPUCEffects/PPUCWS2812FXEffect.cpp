@@ -5,8 +5,23 @@ void PPUCWS2812FXEffect::setDevice(PPUCEffectDevice* effectDevice) {
     ws2812FX = (WS2812FX*) ((PPUCWS2812FXDevice *) device)->getWS2812FX();
 }
 
+void PPUCWS2812FXEffect::start(int r) {
+    PPUCEffect::start();
+    device->on();
+    ws2812FX->setSegment(getFirstSegment(), getFirstLED(), getlastLED(), _mode, _colors, _speed, _options);
+}
+
+void PPUCWS2812FXEffect::stop() {
+    device->off();
+    PPUCEffect::stop();
+}
+
 void PPUCWS2812FXEffect::update() {
     // Don't call service() here!
+
+    if (_duration && _duration < ms) {
+        stop();
+    }
 }
 
 int PPUCWS2812FXEffect::getFirstLED() {

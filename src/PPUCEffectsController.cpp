@@ -19,15 +19,22 @@ PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port) {
 PPUCWS2812FXDevice* PPUCEffectsController::createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED) {
     --port;
 
-    int firstSegment = (number > 0) ? _ws2812FXDevices[port][number - 1]->getLastSegment() + 1 : 0;
+    if (number == 0) {
+        _ws2812FXDevices[port][0]->_reduceLEDs(lastLED, segments - 1);
+    }
+    else {
+        int firstSegment = _ws2812FXDevices[port][number - 1]->getLastSegment() + 1;
 
-    _ws2812FXDevices[port][number] = new PPUCWS2812FXDevice(
-        _ws2812FXDevices[port][0]->getWS2812FX(),
-        firstLED,
-        lastLED,
-        firstSegment,
-        firstSegment + segments - 1
-   );
+        _ws2812FXDevices[port][number] = new PPUCWS2812FXDevice(
+                _ws2812FXDevices[port][0]->getWS2812FX(),
+                firstLED,
+                lastLED,
+                firstSegment,
+                firstSegment + segments - 1
+        );
+
+        ++ws2812FXdevices[port];
+    }
 
     return _ws2812FXDevices[port][number];
 }
@@ -88,7 +95,29 @@ void PPUCEffectsController::update() {
 
     for (int i = 0; i <= 6; i++) {
         if (ws2812FXstates[i]) {
-            _ws2812FXDevices[i][0]->getWS2812FX()->service();
+            if (ws2812FXrunning[i]) {
+                _ws2812FXDevices[i][0]->getWS2812FX()->service();
+
+                bool stop = true;
+                for (int k = 0; k < ws2812FXdevices[i]; k++) {
+                    stop &= _ws2812FXDevices[i][0]->isStopped();
+                }
+                if (stop) {
+                    _ws2812FXDevices[i][0]->getWS2812FX()->stop();
+                    ws2812FXrunning[i] = false;
+                }
+            }
+            else {
+                bool stop = true;
+                for (int k = 0; k < ws2812FXdevices[i]; k++) {
+                    stop &= _ws2812FXDevices[i][0]->isStopped();
+                }
+                if (!stop) {
+                    _ws2812FXDevices[i][0]->getWS2812FX()->start();
+                    ws2812FXrunning[i] = true;
+                    _ws2812FXDevices[i][0]->getWS2812FX()->service();
+                }
+            }
         }
     }
 }

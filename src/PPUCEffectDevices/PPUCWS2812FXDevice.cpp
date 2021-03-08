@@ -2,6 +2,12 @@
 
 void PPUCWS2812FXDevice::on() {
     reset();
+    stopped = false;
+}
+
+void PPUCWS2812FXDevice::off() {
+    reset();
+    stopped = true;
 }
 
 void PPUCWS2812FXDevice::reset() {
@@ -36,3 +42,6 @@ int PPUCWS2812FXDevice::getNumSegments() {
     return _lastSegment - _firstSegment + 1;
 }
 
+bool PPUCWS2812FXDevice::isStopped() {
+    return stopped;
+}

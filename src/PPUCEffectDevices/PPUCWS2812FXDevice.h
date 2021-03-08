@@ -30,6 +30,8 @@ public:
 
     void on();
 
+    void off();
+
     void reset();
 
     WS2812FX* getWS2812FX();
@@ -42,6 +44,13 @@ public:
     int getLastSegment();
     int getNumSegments();
 
+    bool isStopped();
+
+    void _reduceLEDs(int lastLED, int lastSegment) {
+        _lastLED = lastLED;
+        _lastSegment = lastSegment;
+    }
+
 protected:
     WS2812FX* _ws2812FX;
 
@@ -49,6 +58,8 @@ protected:
     int _lastLED;
     int _firstSegment;
     int _lastSegment;
+
+    bool stopped = true;
 };
 
 #endif

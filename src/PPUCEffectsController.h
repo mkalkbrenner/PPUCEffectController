@@ -23,8 +23,7 @@
 #include "PPUCEffects/PPUCLedBlinkEffect.h"
 #include "PPUCEffects/PPUCNullEffect.h"
 #include "PPUCEffects/PPUCRGBColorCycleEffect.h"
-#include "PPUCEffects/PPUCWS2812FXBlink.h"
-#include "PPUCEffects/PPUCWS2812FXRainbowCycle.h"
+#include "PPUCEffects/PPUCWS2812FXEffect.h"
 
 #ifndef EFFECT_STACK_SIZE
 #define EFFECT_STACK_SIZE 50
@@ -80,7 +79,7 @@ public:
                 );
                 _ws2812FXDevices[0][0]->getWS2812FX()->init();
                 _ws2812FXDevices[0][0]->reset();
-                ws2812FXstates[0] = 1;
+                ws2812FXstates[0] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_2) && defined(PPUC_LED_TYPE_2)
                _ws2812FXDevices[1][0] = new PPUCWS2812FXDevice(
@@ -102,7 +101,7 @@ public:
                     0
                 );
                 _ws2812FXDevices[2][0]->getWS2812FX()->init();
-                ws2812FXstates[2] = 1;
+                ws2812FXstates[2] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_4) && defined(PPUC_LED_TYPE_4)
             _ws2812FXDevices[3][0] = new PPUCWS2812FXDevice(
@@ -113,7 +112,7 @@ public:
                     0
                 );
                 _ws2812FXDevices[3][0]->getWS2812FX()->init();
-                ws2812FXstates[3] = 1;
+                ws2812FXstates[3] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_5) && defined(PPUC_LED_TYPE_5)
             _ws2812FXDevices[4][0] = new PPUCWS2812FXDevice(
@@ -124,7 +123,7 @@ public:
                     0
                 );
                 _ws2812FXDevices[4][0]->getWS2812FX()->init();
-                ws2812FXstates[4] = 1;
+                ws2812FXstates[4] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_6) && defined(PPUC_LED_TYPE_6)
             _ws2812FXDevices[5][0] = new PPUCWS2812FXDevice(
@@ -135,7 +134,7 @@ public:
                     0
                 );
                 _ws2812FXDevices[5][0]->init();
-                ws2812FXstates[5] = 1;
+                ws2812FXstates[5] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_7) && defined(PPUC_LED_TYPE_7)
             _ws2812FXDevices[6][0] = new PPUCWS2812FXDevice(
@@ -146,7 +145,7 @@ public:
                     0
                 );
                 _ws2812FXDevices[6][0]->getWS2812FX()->init();
-                ws2812FXstates[6] = 1;
+                ws2812FXstates[6] = true;
             #endif
         } else {
             Serial.print("Unsupported Effects Controller: ");
@@ -183,7 +182,9 @@ private:
     PPUCLedBuiltInDevice* _ledBuiltInDevice;
     PPUCNullDevice* _nullDevice;
     PPUCWS2812FXDevice* _ws2812FXDevices[7][10];
-    bool ws2812FXstates[7] = {0, 0, 0, 0, 0, 0, 0};
+    int ws2812FXdevices[7] = {1, 1, 1, 1, 1, 1, 1};
+    bool ws2812FXstates[7] = {false, false, false, false, false, false, false};
+    bool ws2812FXrunning[7] = {false, false, false, false, false, false, false};
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];
     int stackCounter = -1;
 
