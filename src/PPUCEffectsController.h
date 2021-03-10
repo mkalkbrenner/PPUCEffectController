@@ -19,11 +19,13 @@
 #include "PPUCEffectContainer.h"
 #include "PPUCEffectDevices/PPUCLedBuiltInDevice.h"
 #include "PPUCEffectDevices/PPUCNullDevice.h"
+#include "PPUCEffectDevices/PPUCWavePWMDevice.h"
 #include "PPUCEffectDevices/PPUCWS2812FXDevice.h"
 #include "PPUCEffects/PPUCLedBlinkEffect.h"
 #include "PPUCEffects/PPUCNullEffect.h"
 #include "PPUCEffects/PPUCRGBColorCycleEffect.h"
 #include "PPUCEffects/PPUCWS2812FXEffect.h"
+#include "PPUCEffects/PPUCSinePWMEffect.h"
 
 #ifndef EFFECT_STACK_SIZE
 #define EFFECT_STACK_SIZE 50
@@ -71,6 +73,8 @@ public:
             _ledBuiltInDevice = new PPUCLedBuiltInDevice();
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
+            _shakerPWMDevice = new PPUCWavePWMDevice(36);
+            _ledPWMDevice = new PPUCWavePWMDevice(37);
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
                 _ws2812FXDevices[0][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_1, frameBuffer1, malloc(PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4)), 1, PPUC_LED_TYPE_1),
@@ -175,6 +179,10 @@ public:
 
     PPUCNullDevice* nullDevice();
 
+    PPUCWavePWMDevice* shakerPWMDevice();
+
+    PPUCWavePWMDevice* ledPWMDevice();
+
     PPUCWS2812FXDevice* ws2812FXDevice(int port);
 
     PPUCWS2812FXDevice* createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED);
@@ -197,6 +205,8 @@ private:
     PPUCEventDispatcher* _eventDispatcher;
     PPUCLedBuiltInDevice* _ledBuiltInDevice;
     PPUCNullDevice* _nullDevice;
+    PPUCWavePWMDevice* _shakerPWMDevice;
+    PPUCWavePWMDevice* _ledPWMDevice;
     PPUCWS2812FXDevice* _ws2812FXDevices[7][10];
     int ws2812FXdevices[7] = {1, 1, 1, 1, 1, 1, 1};
     bool ws2812FXstates[7] = {false, false, false, false, false, false, false};

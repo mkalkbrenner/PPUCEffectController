@@ -12,6 +12,14 @@ PPUCNullDevice* PPUCEffectsController::nullDevice() {
     return _nullDevice;
 }
 
+PPUCWavePWMDevice* PPUCEffectsController::shakerPWMDevice() {
+    return _shakerPWMDevice;
+}
+
+PPUCWavePWMDevice* PPUCEffectsController::ledPWMDevice() {
+    return _ledPWMDevice;
+}
+
 PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port) {
     return _ws2812FXDevices[--port][0];
 }
