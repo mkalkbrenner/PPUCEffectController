@@ -76,95 +76,101 @@ public:
             _shakerPWMDevice = new PPUCWavePWMDevice(36);
             _ledPWMDevice = new PPUCWavePWMDevice(37);
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
-                _ws2812FXDevices[0][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[0][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_1, frameBuffer1, malloc(PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4)), 1, PPUC_LED_TYPE_1),
                     0,
                     PPUC_NUM_LEDS_1 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[0][0]->getWS2812FX()->init();
-               // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[0][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                _ws2812FXDevices[0][0]->reset();
+                ws2812FXDevices[0][0]->getWS2812FX()->init();
+                // Brightness will be set via potentiometer later.
+                ws2812FXDevices[0][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[0][0]->reset();
                 ws2812FXstates[0] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_2) && defined(PPUC_LED_TYPE_2)
-               _ws2812FXDevices[1][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[1][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_2, frameBuffer2, malloc(PPUC_NUM_LEDS_2 * ((PPUC_LED_TYPE_2 < 6) ? 3 : 4)), 8, PPUC_LED_TYPE_2),
                     0,
                     PPUC_NUM_LEDS_2 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[1][0]->getWS2812FX()->init();
-               // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[2][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXstates[1] = 1;
+                ws2812FXDevices[1][0]->getWS2812FX()->init();
+                // Brightness will be set via potentiometer later.
+                ws2812FXDevices[1][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[1][0]->reset();
+                ws2812FXstates[1] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_3) && defined(PPUC_LED_TYPE_3)
-            _ws2812FXDevices[2][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[2][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_3, frameBuffer3, malloc(PPUC_NUM_LEDS_3 * ((PPUC_LED_TYPE_3 < 6) ? 3 : 4)), 14, PPUC_LED_TYPE_3),
                     0,
                     PPUC_NUM_LEDS_3 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[2][0]->getWS2812FX()->init();
+                ws2812FXDevices[2][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[2][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-               ws2812FXstates[2] = true;
+                ws2812FXDevices[2][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[2][0]->reset();
+                ws2812FXstates[2] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_4) && defined(PPUC_LED_TYPE_4)
-            _ws2812FXDevices[3][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[3][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_4, frameBuffer4, malloc(PPUC_NUM_LEDS_4 * ((PPUC_LED_TYPE_4 < 6) ? 3 : 4)), 17, PPUC_LED_TYPE_4),
                     0,
                     PPUC_NUM_LEDS_4 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[3][0]->getWS2812FX()->init();
-               // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[3][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[3][0]->getWS2812FX()->init();
+                // Brightness will be set via potentiometer later.
+                ws2812FXDevices[3][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[3][0]->reset();
                 ws2812FXstates[3] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_5) && defined(PPUC_LED_TYPE_5)
-            _ws2812FXDevices[4][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[4][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_5, frameBuffer5, malloc(PPUC_NUM_LEDS_5 * ((PPUC_LED_TYPE_5 < 6) ? 3 : 4)), 20, PPUC_LED_TYPE_5),
                     0,
                     PPUC_NUM_LEDS_5 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[4][0]->getWS2812FX()->init();
-               // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[4][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[4][0]->getWS2812FX()->init();
+                // Brightness will be set via potentiometer later.
+                ws2812FXDevices[4][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[4][0]->reset();
                 ws2812FXstates[4] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_6) && defined(PPUC_LED_TYPE_6)
-            _ws2812FXDevices[5][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[5][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_6, frameBuffer6, malloc(PPUC_NUM_LEDS_6 * ((PPUC_LED_TYPE_6 < 6) ? 3 : 4)), 24, PPUC_LED_TYPE_6),
                     0,
                     PPUC_NUM_LEDS_6 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[5][0]->getWS2812FX()->init();
-               // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[5][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[5][0]->getWS2812FX()->init();
+                // Brightness will be set via potentiometer later.
+                ws2812FXDevices[5][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[5][0]->reset();
                 ws2812FXstates[5] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_7) && defined(PPUC_LED_TYPE_7)
-            _ws2812FXDevices[6][0] = new PPUCWS2812FXDevice(
+                ws2812FXDevices[6][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_7, frameBuffer7, malloc(PPUC_NUM_LEDS_7 * ((PPUC_LED_TYPE_7 < 6) ? 3 : 4)), 29, PPUC_LED_TYPE_7),
                     0,
                     PPUC_NUM_LEDS_7 - 1,
                     0,
                     0
                 );
-                _ws2812FXDevices[6][0]->getWS2812FX()->init();
-               // Brightness will be set via potentiometer later.
-                _ws2812FXDevices[6][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[6][0]->getWS2812FX()->init();
+                // Brightness will be set via potentiometer later.
+                ws2812FXDevices[6][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[6][0]->reset();
                 ws2812FXstates[6] = true;
             #endif
         } else {
@@ -207,7 +213,7 @@ private:
     PPUCNullDevice* _nullDevice;
     PPUCWavePWMDevice* _shakerPWMDevice;
     PPUCWavePWMDevice* _ledPWMDevice;
-    PPUCWS2812FXDevice* _ws2812FXDevices[7][10];
+    PPUCWS2812FXDevice* ws2812FXDevices[7][10];
     int ws2812FXdevices[7] = {1, 1, 1, 1, 1, 1, 1};
     bool ws2812FXstates[7] = {false, false, false, false, false, false, false};
     bool ws2812FXrunning[7] = {false, false, false, false, false, false, false};
@@ -216,7 +222,7 @@ private:
 
     int mode = 0;
 
-    unsigned long _ws2812UpdateInterval = 0;
+    unsigned long ws2812UpdateInterval = 0;
 };
 
 #endif

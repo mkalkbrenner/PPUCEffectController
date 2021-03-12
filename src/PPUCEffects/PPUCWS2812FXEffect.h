@@ -19,21 +19,21 @@ class PPUCWS2812FXEffect : public PPUCEffect {
 public:
 
     PPUCWS2812FXEffect(uint8_t mode, uint32_t color, uint16_t speed, uint8_t options, int duration = 0) {
-        _mode = mode;
-        _colors[0] = color;
-        _speed = speed;
-        _options = options;
-        _duration = duration;
+        this->mode = mode;
+        this->colors[0] = color;
+        this->speed = speed;
+        this->options = options;
+        this->duration = duration;
     }
 
     PPUCWS2812FXEffect(uint8_t mode, const uint32_t colors[], uint16_t speed, uint8_t options, int duration = 0) {
-        _mode = mode;
-        _colors[0] = colors[0];
-        _colors[1] = colors[1];
-        _colors[2] = colors[2];
-        _speed = speed;
-        _options = options;
-        _duration = duration;
+        this->mode = mode;
+        this->colors[0] = colors[0];
+        this->colors[1] = colors[1];
+        this->colors[2] = colors[2];
+        this->speed = speed;
+        this->options = options;
+        this->duration = duration;
     }
 
     virtual void setDevice(PPUCEffectDevice* effectDevice);
@@ -54,11 +54,11 @@ public:
 
 protected:
     WS2812FX* ws2812FX;
-    uint8_t _mode;
-    uint32_t _colors[3] = {0, 0, 0};
-    uint16_t _speed;
-    uint8_t _options;
-    int _duration; // 0 means unlimited
+    uint8_t mode;
+    uint32_t colors[3] = {0, 0, 0};
+    uint16_t speed;
+    uint8_t options;
+    int duration; // 0 means unlimited
 };
 
 #endif

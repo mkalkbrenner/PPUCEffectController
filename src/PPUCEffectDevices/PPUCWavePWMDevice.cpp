@@ -9,9 +9,9 @@ void PPUCWavePWMDevice::reset() {
 }
 
 void PPUCWavePWMDevice::setPWM(uint8_t pwm) {
-    analogWrite(_pin, pwm);
+    analogWrite(pin, pwm);
 }
 
 WavePWM* PPUCWavePWMDevice::getWavePWM() {
-    return _wavePWM;
+    return wavePWM;
 }

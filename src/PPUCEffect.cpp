@@ -4,7 +4,7 @@ PPUCEffect::PPUCEffect() {
 }
 
 void PPUCEffect::setEventDispatcher(PPUCEventDispatcher* eD) {
-    _eventDispatcher = eD;
+    eventDispatcher = eD;
 }
 
 void PPUCEffect::setDevice(PPUCEffectDevice* effectDevice) {
@@ -12,7 +12,7 @@ void PPUCEffect::setDevice(PPUCEffectDevice* effectDevice) {
 }
 
 void PPUCEffect::dispatch(PPUCEvent* event) {
-    _eventDispatcher->dispatch(event);
+    eventDispatcher->dispatch(event);
 }
 
 bool PPUCEffect::isRunning() {

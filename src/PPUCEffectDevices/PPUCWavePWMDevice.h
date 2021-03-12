@@ -16,9 +16,9 @@
 class PPUCWavePWMDevice : public PPUCEffectDevice {
 public:
     PPUCWavePWMDevice(int pin) {
-        _wavePWM = new WavePWM();
-        _pin = pin;
-        pinMode(_pin, OUTPUT);
+        this->wavePWM = new WavePWM();
+        this->pin = pin;
+        pinMode(pin, OUTPUT);
         off();
     }
 
@@ -31,9 +31,9 @@ public:
     WavePWM* getWavePWM();
 
 protected:
-    WavePWM* _wavePWM;
+    WavePWM* wavePWM;
 
-    int _pin;
+    int pin;
 };
 
 #endif

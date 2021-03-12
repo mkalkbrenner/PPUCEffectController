@@ -8,7 +8,7 @@ void PPUCWS2812FXEffect::setDevice(PPUCEffectDevice* effectDevice) {
 void PPUCWS2812FXEffect::start(int r) {
     PPUCEffect::start();
     device->on();
-    ws2812FX->setSegment(getFirstSegment(), getFirstLED(), getlastLED(), _mode, _colors, _speed, _options);
+    ws2812FX->setSegment(getFirstSegment(), getFirstLED(), getlastLED(), mode, colors, speed, options);
 }
 
 void PPUCWS2812FXEffect::stop() {
@@ -19,7 +19,7 @@ void PPUCWS2812FXEffect::stop() {
 void PPUCWS2812FXEffect::update() {
     // Don't call service() here!
 
-    if (_duration && _duration < ms) {
+    if (duration && duration < ms) {
         stop();
     }
 }

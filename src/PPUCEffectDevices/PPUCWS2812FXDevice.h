@@ -19,11 +19,11 @@
 class PPUCWS2812FXDevice : public PPUCEffectDevice {
 public:
     PPUCWS2812FXDevice(WS2812FX* ws2812FX, int firstLED, int lastLED, int firstSegment, int lastSegment) {
-        _ws2812FX = ws2812FX;
-        _firstLED = firstLED;
-        _lastLED = lastLED;
-        _firstSegment = firstSegment;
-        _lastSegment = lastSegment;
+        this->ws2812FX = ws2812FX;
+        this->firstLED = firstLED;
+        this->lastLED = lastLED;
+        this->firstSegment = firstSegment;
+        this->lastSegment = lastSegment;
 
         off();
     }
@@ -47,17 +47,17 @@ public:
     bool isStopped();
 
     void _reduceLEDs(int lastLED, int lastSegment) {
-        _lastLED = lastLED;
-        _lastSegment = lastSegment;
+        this->lastLED = lastLED;
+        this->lastSegment = lastSegment;
     }
 
 protected:
-    WS2812FX* _ws2812FX;
+    WS2812FX* ws2812FX;
 
-    int _firstLED;
-    int _lastLED;
-    int _firstSegment;
-    int _lastSegment;
+    int firstLED;
+    int lastLED;
+    int firstSegment;
+    int lastSegment;
 
     bool stopped = true;
 };

@@ -39,7 +39,7 @@ public:
 protected:
     void dispatch(PPUCEvent* event);
 
-    PPUCEventDispatcher* _eventDispatcher;
+    PPUCEventDispatcher* eventDispatcher;
     PPUCEffectDevice* device;
 
     bool running = false;
