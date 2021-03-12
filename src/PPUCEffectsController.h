@@ -17,6 +17,7 @@
 
 #include "PPUCEffect.h"
 #include "PPUCEffectContainer.h"
+#include "PPUCEffectControllerTestButtons.h"
 #include "PPUCEffectDevices/PPUCLedBuiltInDevice.h"
 #include "PPUCEffectDevices/PPUCNullDevice.h"
 #include "PPUCEffectDevices/PPUCWavePWMDevice.h"
@@ -73,6 +74,7 @@ public:
             _ledBuiltInDevice = new PPUCLedBuiltInDevice();
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
+            _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
             _shakerPWMDevice = new PPUCWavePWMDevice(36);
             _ledPWMDevice = new PPUCWavePWMDevice(37);
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
@@ -223,6 +225,7 @@ private:
     int mode = 0;
 
     unsigned long ws2812UpdateInterval = 0;
+    PPUCEffectControllerTestButtons* _testButtons;
 };
 
 #endif

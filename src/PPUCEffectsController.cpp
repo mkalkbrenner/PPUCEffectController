@@ -92,6 +92,8 @@ void PPUCEffectsController::handleEvent(PPUCEvent* event) {
 }
 
 void PPUCEffectsController::update() {
+    _testButtons->update();
+
     _eventDispatcher->update();
 
     for (int i = 0; i <= stackCounter; i++) {
