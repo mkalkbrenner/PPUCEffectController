@@ -9,6 +9,7 @@
 #define PPUCEffectControllerTestButtons_h
 
 #include <Arduino.h>
+#include <Bounce2.h>
 #include <PPUCEvent.h>
 #include <PPUCEventDispatcher.h>
 
@@ -20,8 +21,7 @@ public:
 
 protected:
     PPUCEventDispatcher* eventDispatcher;
-    bool button1;
-    bool button2;
+    Bounce2::Button* button[2];
 };
 
 #endif
