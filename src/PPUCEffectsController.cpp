@@ -93,6 +93,7 @@ void PPUCEffectsController::handleEvent(PPUCEvent* event) {
 
 void PPUCEffectsController::update() {
     _testButtons->update();
+    _generalIllumintationWPC->update();
 
     _eventDispatcher->update();
 

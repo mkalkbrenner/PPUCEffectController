@@ -17,7 +17,8 @@
 
 #include "PPUCEffect.h"
 #include "PPUCEffectContainer.h"
-#include "PPUCEffectControllerTestButtons.h"
+#include "PPUCInputDevices/PPUCEffectControllerTestButtons.h"
+#include "PPUCInputDevices/PPUCGeneralIlluminationWPC.h"
 #include "PPUCEffectDevices/PPUCLedBuiltInDevice.h"
 #include "PPUCEffectDevices/PPUCNullDevice.h"
 #include "PPUCEffectDevices/PPUCWavePWMDevice.h"
@@ -75,6 +76,7 @@ public:
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
             _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
+            _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
             _shakerPWMDevice = new PPUCWavePWMDevice(36);
             _ledPWMDevice = new PPUCWavePWMDevice(37);
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
@@ -175,6 +177,9 @@ public:
                 ws2812FXDevices[6][0]->reset();
                 ws2812FXstates[6] = true;
             #endif
+            _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
+            _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
+            _generalIllumintationWPC->start();
         } else {
             Serial.print("Unsupported Effects Controller: ");
             Serial.println(controllerType);
@@ -226,6 +231,7 @@ private:
 
     unsigned long ws2812UpdateInterval = 0;
     PPUCEffectControllerTestButtons* _testButtons;
+    PPUCGeneralIlluminationWPC* _generalIllumintationWPC;
 };
 
 #endif
