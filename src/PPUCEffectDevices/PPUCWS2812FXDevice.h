@@ -13,8 +13,9 @@
 
 #include "PPUCEffectDevice.h"
 
-#define RGBW_BLACK     (uint32_t)0x00000000
-#define RGBW_PUREWHITE (uint32_t)0xFF000000
+#define RGBW_BLACK      (uint32_t)0x00000000
+#define RGBW_PUREWHITE  (uint32_t)0xFF000000
+#define RGBW_ULTRAWHITE (uint32_t)0xFFFFFFFF
 
 class PPUCWS2812FXDevice : public PPUCEffectDevice {
 public:
@@ -28,9 +29,9 @@ public:
         off();
     }
 
-    void on();
+    virtual void on();
 
-    void off();
+    virtual void off();
 
     void reset();
 

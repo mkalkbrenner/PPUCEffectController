@@ -24,6 +24,26 @@ PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port) {
     return ws2812FXDevices[--port][0];
 }
 
+PPUCCombinedGiAndLightMatrixWS2812FXDevice* PPUCEffectsController::combinedGiAndLightMatrixWs2812FXDevice(int port) {
+    PPUCWS2812FXDevice* ws2812FXDevice = ws2812FXDevices[--port][0];
+
+    PPUCCombinedGiAndLightMatrixWS2812FXDevice* giAndLightMatrix = new PPUCCombinedGiAndLightMatrixWS2812FXDevice(
+        ws2812FXDevice->getWS2812FX(),
+        ws2812FXDevice->getFirstLED(),
+        ws2812FXDevice->getlastLED(),
+        ws2812FXDevice->getFirstSegment(),
+        ws2812FXDevice->getLastSegment()
+    );
+
+    ws2812FXDevices[--port][0] = giAndLightMatrix;
+    delete ws2812FXDevice;
+
+    _eventDispatcher->addListener(giAndLightMatrix, EVENT_SOURCE_GI);
+    _eventDispatcher->addListener(giAndLightMatrix, EVENT_SOURCE_LIGHT);
+
+    return giAndLightMatrix;
+}
+
 PPUCWS2812FXDevice* PPUCEffectsController::createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED) {
     --port;
 

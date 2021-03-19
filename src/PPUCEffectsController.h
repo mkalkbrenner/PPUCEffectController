@@ -23,6 +23,7 @@
 #include "PPUCEffectDevices/PPUCNullDevice.h"
 #include "PPUCEffectDevices/PPUCWavePWMDevice.h"
 #include "PPUCEffectDevices/PPUCWS2812FXDevice.h"
+#include "PPUCEffectDevices/PPUCCombinedGiAndLightMatrixWS2812FXDevice.h"
 #include "PPUCEffects/PPUCLedBlinkEffect.h"
 #include "PPUCEffects/PPUCNullEffect.h"
 #include "PPUCEffects/PPUCRGBColorCycleEffect.h"
@@ -197,6 +198,8 @@ public:
     PPUCWavePWMDevice* ledPWMDevice();
 
     PPUCWS2812FXDevice* ws2812FXDevice(int port);
+
+    PPUCCombinedGiAndLightMatrixWS2812FXDevice* combinedGiAndLightMatrixWs2812FXDevice(int port);
 
     PPUCWS2812FXDevice* createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED);
 
