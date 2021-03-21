@@ -25,8 +25,6 @@ public:
         this->lastLED = lastLED;
         this->firstSegment = firstSegment;
         this->lastSegment = lastSegment;
-
-        off();
     }
 
     virtual void on();

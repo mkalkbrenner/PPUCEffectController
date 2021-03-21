@@ -20,6 +20,10 @@ PPUCWavePWMDevice* PPUCEffectsController::ledPWMDevice() {
     return _ledPWMDevice;
 }
 
+PPUCRgbStripDevice* PPUCEffectsController::rgbStripDevice() {
+    return _rgbStripeDevice;
+}
+
 PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port) {
     return ws2812FXDevices[--port][0];
 }
@@ -34,6 +38,8 @@ PPUCCombinedGiAndLightMatrixWS2812FXDevice* PPUCEffectsController::combinedGiAnd
         ws2812FXDevice->getFirstSegment(),
         ws2812FXDevice->getLastSegment()
     );
+
+    giAndLightMatrix->off();
 
     ws2812FXDevices[--port][0] = giAndLightMatrix;
     delete ws2812FXDevice;

@@ -19,14 +19,13 @@ public:
         this->wavePWM = new WavePWM();
         this->pin = pin;
         pinMode(pin, OUTPUT);
-        off();
     }
 
     void on();
 
     void reset();
 
-    void setPWM(uint8_t pwm);
+    virtual void setPWM(uint8_t pwm);
 
     WavePWM* getWavePWM();
 

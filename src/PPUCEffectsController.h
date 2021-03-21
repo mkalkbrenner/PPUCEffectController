@@ -24,6 +24,7 @@
 #include "PPUCEffectDevices/PPUCWavePWMDevice.h"
 #include "PPUCEffectDevices/PPUCWS2812FXDevice.h"
 #include "PPUCEffectDevices/PPUCCombinedGiAndLightMatrixWS2812FXDevice.h"
+#include "PPUCEffectDevices/PPUCRgbStripDevice.h"
 #include "PPUCEffects/PPUCLedBlinkEffect.h"
 #include "PPUCEffects/PPUCNullEffect.h"
 #include "PPUCEffects/PPUCRGBColorCycleEffect.h"
@@ -77,9 +78,12 @@ public:
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
             _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
-            _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
             _shakerPWMDevice = new PPUCWavePWMDevice(36);
+            _shakerPWMDevice->off();
             _ledPWMDevice = new PPUCWavePWMDevice(37);
+            _ledPWMDevice->off();
+            _rgbStripeDevice = new PPUCRgbStripDevice(9, 10, 11);
+            _rgbStripeDevice->off();
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
                 ws2812FXDevices[0][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_1, frameBuffer1, malloc(PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4)), 1, PPUC_LED_TYPE_1),
@@ -91,7 +95,7 @@ public:
                 ws2812FXDevices[0][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[0][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[0][0]->reset();
+                ws2812FXDevices[0][0]->off();
                 ws2812FXstates[0] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_2) && defined(PPUC_LED_TYPE_2)
@@ -105,7 +109,7 @@ public:
                 ws2812FXDevices[1][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[1][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[1][0]->reset();
+                ws2812FXDevices[1][0]->off();
                 ws2812FXstates[1] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_3) && defined(PPUC_LED_TYPE_3)
@@ -119,7 +123,7 @@ public:
                 ws2812FXDevices[2][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[2][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[2][0]->reset();
+                ws2812FXDevices[2][0]->off();
                 ws2812FXstates[2] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_4) && defined(PPUC_LED_TYPE_4)
@@ -133,7 +137,7 @@ public:
                 ws2812FXDevices[3][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[3][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[3][0]->reset();
+                ws2812FXDevices[3][0]->off();
                 ws2812FXstates[3] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_5) && defined(PPUC_LED_TYPE_5)
@@ -147,7 +151,7 @@ public:
                 ws2812FXDevices[4][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[4][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[4][0]->reset();
+                ws2812FXDevices[4][0]->off();
                 ws2812FXstates[4] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_6) && defined(PPUC_LED_TYPE_6)
@@ -161,7 +165,7 @@ public:
                 ws2812FXDevices[5][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[5][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[5][0]->reset();
+                ws2812FXDevices[5][0]->off();
                 ws2812FXstates[5] = true;
             #endif
             #if defined(PPUC_NUM_LEDS_7) && defined(PPUC_LED_TYPE_7)
@@ -175,7 +179,7 @@ public:
                 ws2812FXDevices[6][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
                 ws2812FXDevices[6][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
-                ws2812FXDevices[6][0]->reset();
+                ws2812FXDevices[6][0]->off();
                 ws2812FXstates[6] = true;
             #endif
             _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
@@ -196,6 +200,8 @@ public:
     PPUCWavePWMDevice* shakerPWMDevice();
 
     PPUCWavePWMDevice* ledPWMDevice();
+
+    PPUCRgbStripDevice* rgbStripDevice();
 
     PPUCWS2812FXDevice* ws2812FXDevice(int port);
 
@@ -223,6 +229,7 @@ private:
     PPUCNullDevice* _nullDevice;
     PPUCWavePWMDevice* _shakerPWMDevice;
     PPUCWavePWMDevice* _ledPWMDevice;
+    PPUCRgbStripDevice* _rgbStripeDevice;
     PPUCWS2812FXDevice* ws2812FXDevices[7][10];
     int ws2812FXdevices[7] = {1, 1, 1, 1, 1, 1, 1};
     bool ws2812FXstates[7] = {false, false, false, false, false, false, false};
