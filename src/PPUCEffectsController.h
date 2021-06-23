@@ -31,6 +31,9 @@
 #include "PPUCEffects/PPUCWS2812FXEffect.h"
 #include "PPUCEffects/PPUCSinePWMEffect.h"
 
+#define PINBALL_TYPE_DATA_EAST 1
+#define PINBALL_TYPE_WPC 2
+
 #ifndef EFFECT_STACK_SIZE
 #define EFFECT_STACK_SIZE 50
 
@@ -69,11 +72,11 @@
 class PPUCEffectsController : public PPUCEventListener {
 
 public:
-    PPUCEffectsController(String controllerType) : PPUCEventListener(){
+    PPUCEffectsController(String controllerType, int pinballType) : PPUCEventListener(){
         _eventDispatcher = new PPUCEventDispatcher();
         _eventDispatcher->addListener(this);
 
-        if (controllerType == "Teensy4.1") {
+        if (controllerType == "0.1.0" || "0.2.0") {
             _ledBuiltInDevice = new PPUCLedBuiltInDevice();
             _ledBuiltInDevice->on();
             _nullDevice = new PPUCNullDevice();
@@ -82,8 +85,16 @@ public:
             _shakerPWMDevice->off();
             _ledPWMDevice = new PPUCWavePWMDevice(37);
             _ledPWMDevice->off();
-            _rgbStripeDevice = new PPUCRgbStripDevice(9, 10, 11);
-            _rgbStripeDevice->off();
+            if (controllerType != "0.1.0") {
+                _rgbStripeDevice = new PPUCRgbStripDevice(9, 10, 11);
+                _rgbStripeDevice->off();
+            }
+            else {
+                // In revision 0.1.0 these pins are D5-D7, but we don't need them for the WPC GI.
+                pinMode(9, INPUT);
+                pinMode(10, INPUT);
+                pinMode(11, INPUT);
+            }
             #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
                 ws2812FXDevices[0][0] = new PPUCWS2812FXDevice(
                     new WS2812FX(PPUC_NUM_LEDS_1, frameBuffer1, malloc(PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4)), 1, PPUC_LED_TYPE_1),
@@ -183,8 +194,11 @@ public:
                 ws2812FXstates[6] = true;
             #endif
             _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
-            _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
-            _generalIllumintationWPC->start();
+
+            if (pinballType = PINBALL_TYPE_WPC) {
+                _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
+                _generalIllumintationWPC->start();
+            }
         } else {
             Serial.print("Unsupported Effects Controller: ");
             Serial.println(controllerType);

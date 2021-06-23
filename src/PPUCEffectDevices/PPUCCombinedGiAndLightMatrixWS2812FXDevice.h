@@ -88,6 +88,8 @@ protected:
     uint8_t ledGIPositions[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
     uint32_t ledGIColors[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
 
+    // Internally we store the positions in Data East numbering from 1 to 64.
+    // The WPC-specific functions convert the WPC-specific numbering.
     uint8_t ledLightMatrixPositions[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
     uint32_t ledLightMatrixColors[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
 
