@@ -56,16 +56,8 @@ void PPUCGeneralIlluminationWPC::newBrightness(uint8_t string, uint8_t b)
         // brightness interval have been seen
         if (sBrightnessHist[string][b] > BRIGHTNESS_SWITCH_THRESH)
         {
-            if (b != sBrightnessTarget[string])
-            {
-                // store current brightness
-                sBrightness[string] = sBrightnessTarget[string];
-
-                // switch to the new brightness target value
-                sBrightnessTarget[string] = b;
-
-                //distpatch
-            }
+            // switch to the new brightness target value
+            sBrightnessTarget[string] = b;
 
             // clear the histogram
             memset((void*)&(sBrightnessHist[string][0]), 0, NUM_BRIGHTNESS + 1);
@@ -146,7 +138,7 @@ void PPUCGeneralIlluminationWPC::_changeZC()
 uint8_t PPUCGeneralIlluminationWPC::dtToBrightness(uint32_t dt)
 {
     // This function leaves some margin at the interval borders to account for
-    // the fact the intervals are slightly overlapping and therefore a
+    // the fact the intervals are slightly overlapping and therefore an
     // unambiguous brightness determination is not always possible. In this case
     // the function returns 255.
 
