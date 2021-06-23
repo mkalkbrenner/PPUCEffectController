@@ -1,5 +1,3 @@
-# Pinball Power-Up Construction Kit
+# Pinball Power-Up Controller
 
-
-## Compile
-https://github.com/PaulStoffregen/TimerOne master snapshot is required to work with Teensy 4
+## Effect Controller
