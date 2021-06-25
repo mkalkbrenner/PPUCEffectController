@@ -15,6 +15,8 @@ public:
     virtual void on() = 0;
 
     virtual void off();
+
+    virtual ~PPUCEffectDevice() {}
 };
 
 #endif

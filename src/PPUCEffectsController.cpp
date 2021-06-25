@@ -28,7 +28,11 @@ PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port) {
     return ws2812FXDevices[--port][0];
 }
 
-PPUCCombinedGiAndLightMatrixWS2812FXDevice* PPUCEffectsController::combinedGiAndLightMatrixWs2812FXDevice(int port) {
+PPUCCombinedGiAndLightMatrixWS2812FXDevice* PPUCEffectsController::giAndLightMatrix(int port) {
+    return (PPUCCombinedGiAndLightMatrixWS2812FXDevice*) ws2812FXDevice(port);
+}
+
+PPUCCombinedGiAndLightMatrixWS2812FXDevice* PPUCEffectsController::createCombinedGiAndLightMatrixWs2812FXDevice(int port) {
     PPUCWS2812FXDevice* ws2812FXDevice = ws2812FXDevices[--port][0];
 
     PPUCCombinedGiAndLightMatrixWS2812FXDevice* giAndLightMatrix = new PPUCCombinedGiAndLightMatrixWS2812FXDevice(

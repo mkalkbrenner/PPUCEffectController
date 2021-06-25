@@ -195,7 +195,7 @@ public:
             #endif
             _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
 
-            if (pinballType = PINBALL_TYPE_WPC) {
+            if (pinballType == PINBALL_TYPE_WPC) {
                 _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
                 _generalIllumintationWPC->start();
             }
@@ -219,7 +219,9 @@ public:
 
     PPUCWS2812FXDevice* ws2812FXDevice(int port);
 
-    PPUCCombinedGiAndLightMatrixWS2812FXDevice* combinedGiAndLightMatrixWs2812FXDevice(int port);
+    PPUCCombinedGiAndLightMatrixWS2812FXDevice* createCombinedGiAndLightMatrixWs2812FXDevice(int port);
+
+    PPUCCombinedGiAndLightMatrixWS2812FXDevice* giAndLightMatrix(int port);
 
     PPUCWS2812FXDevice* createWS2812FXDevice(int port, int number, int segments, int firstLED, int lastLED);
 
