@@ -247,7 +247,7 @@ private:
     PPUCWavePWMDevice* _ledPWMDevice;
     PPUCRgbStripDevice* _rgbStripeDevice;
     PPUCWS2812FXDevice* ws2812FXDevices[7][10];
-    int ws2812FXdevices[7] = {1, 1, 1, 1, 1, 1, 1};
+    int ws2812FXDeviceCounters[7] = {1, 1, 1, 1, 1, 1, 1};
     bool ws2812FXstates[7] = {false, false, false, false, false, false, false};
     bool ws2812FXrunning[7] = {false, false, false, false, false, false, false};
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];

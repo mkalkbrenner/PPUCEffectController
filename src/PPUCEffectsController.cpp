@@ -71,7 +71,7 @@ PPUCWS2812FXDevice* PPUCEffectsController::createWS2812FXDevice(int port, int nu
             firstSegment + segments - 1
         );
 
-        ++ws2812FXdevices[port];
+        ++ws2812FXDeviceCounters[port];
     }
 
     return ws2812FXDevices[port][number];
@@ -145,7 +145,7 @@ void PPUCEffectsController::update() {
                     ws2812FXDevices[i][0]->getWS2812FX()->service();
 
                     bool stop = true;
-                    for (int k = 0; k < ws2812FXdevices[i]; k++) {
+                    for (int k = 0; k < ws2812FXDeviceCounters[i]; k++) {
                         stop &= ws2812FXDevices[i][0]->isStopped();
                     }
                     if (stop) {
@@ -154,7 +154,7 @@ void PPUCEffectsController::update() {
                     }
                 } else {
                     bool stop = true;
-                    for (int k = 0; k < ws2812FXdevices[i]; k++) {
+                    for (int k = 0; k < ws2812FXDeviceCounters[i]; k++) {
                         stop &= ws2812FXDevices[i][0]->isStopped();
                     }
                     if (!stop) {

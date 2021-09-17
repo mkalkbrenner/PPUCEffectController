@@ -9,6 +9,7 @@ void PPUCWS2812FXEffect::start(int r) {
     PPUCEffect::start();
     device->on();
     ws2812FX->setSegment(getFirstSegment(), getFirstLED(), getlastLED(), mode, colors, speed, options);
+    ws2812FX->resetSegmentRuntime(getFirstSegment());
 }
 
 void PPUCWS2812FXEffect::stop() {
