@@ -1,21 +1,5 @@
 #include "PPUCSinePWMEffect.h"
 
-void PPUCSinePWMEffect::setDevice(PPUCEffectDevice* effectDevice) {
-    PPUCEffect::setDevice(effectDevice);
-    wavePWM = (WavePWM*) ((PPUCWavePWMDevice *) device)->getWavePWM();
-}
-
-void PPUCSinePWMEffect::start(int r) {
-    PPUCEffect::start(r);
-    device->on();
-    wavePWM->setup(waveDuration);
-}
-
-void PPUCSinePWMEffect::stop() {
-    device->off();
-    PPUCEffect::stop();
-}
-
 void PPUCSinePWMEffect::update() {
     uint8_t pwm = 0;
 

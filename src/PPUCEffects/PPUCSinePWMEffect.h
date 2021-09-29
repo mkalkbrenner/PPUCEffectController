@@ -11,38 +11,23 @@
 #include <Arduino.h>
 #include <WavePWM.h>
 
-#include "../PPUCEffect.h"
+#include "PPUCWavePWMEffect.h"
 #include "../PPUCEffectDevice.h"
 #include "../PPUCEffectDevices/PPUCWavePWMDevice.h"
 
-class PPUCSinePWMEffect : public PPUCEffect {
+class PPUCSinePWMEffect : public PPUCWavePWMEffect {
 public:
 
-    PPUCSinePWMEffect(unsigned int frequency, unsigned int duration, uint8_t maxIntensity = 255, uint8_t minIntensity = 0) {
-        this->waveDuration = 1000 / frequency;
+    PPUCSinePWMEffect(unsigned int frequency, unsigned int duration, uint8_t maxIntensity = 255, uint8_t minIntensity = 0) : PPUCWavePWMEffect(frequency, maxIntensity, minIntensity) {
         this->duration = duration;
-        this->maxIntensity = maxIntensity;
-        this->minIntensity = minIntensity;
-        this->rampCompression = maxIntensity / 255;
-        this->compression = (maxIntensity - minIntensity) / 255;
+        this->rampCompression = 255 / maxIntensity;
     }
-
-    virtual void setDevice(PPUCEffectDevice* effectDevice);
-
-    virtual void start(int repeat = 0);
-
-    virtual void stop();
 
     virtual void update();
 
 protected:
-    WavePWM* wavePWM;
-    unsigned int waveDuration;
     unsigned int duration;
-    uint8_t minIntensity;
-    uint8_t maxIntensity;
     uint8_t rampCompression;
-    uint8_t compression;
 };
 
 #endif

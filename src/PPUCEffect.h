@@ -28,9 +28,9 @@ public:
 
     virtual void update() = 0;
 
-    void updateMillis();
+    virtual void updateMillis();
 
-    void resetMillis();
+    virtual void resetMillis();
 
     void setEventDispatcher(PPUCEventDispatcher* eD);
 

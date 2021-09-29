@@ -29,6 +29,8 @@
 #include "PPUCEffects/PPUCNullEffect.h"
 #include "PPUCEffects/PPUCRGBColorCycleEffect.h"
 #include "PPUCEffects/PPUCWS2812FXEffect.h"
+#include "PPUCEffects/PPUCImpulsePWMEffect.h"
+#include "PPUCEffects/PPUCRampDownStopPWMEffect.h"
 #include "PPUCEffects/PPUCSinePWMEffect.h"
 
 #define PINBALL_TYPE_DATA_EAST 1

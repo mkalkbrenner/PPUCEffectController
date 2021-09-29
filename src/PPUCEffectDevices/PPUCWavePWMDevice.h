@@ -27,12 +27,15 @@ public:
 
     virtual void setPWM(uint8_t pwm);
 
+    uint8_t getPWM();
+
     WavePWM* getWavePWM();
 
 protected:
     WavePWM* wavePWM;
 
     int pin;
+    uint8_t currentPWM = 0;
 };
 
 #endif

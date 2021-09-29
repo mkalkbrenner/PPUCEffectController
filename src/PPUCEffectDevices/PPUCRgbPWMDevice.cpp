@@ -4,6 +4,8 @@ void PPUCRgbStripDevice::setPWM(uint8_t pwm) {
     setPWMRed(pwm);
     setPWMGreen(pwm);
     setPWMBlue(pwm);
+
+    currentPWM = pwm;
 }
 
 void PPUCRgbStripDevice::setPWMRed(uint8_t pwm) {
