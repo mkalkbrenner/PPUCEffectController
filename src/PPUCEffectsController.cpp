@@ -91,6 +91,14 @@ void PPUCEffectsController::addEffect(PPUCEffectContainer* container) {
     stackEffectContainers[++stackCounter] = container;
 }
 
+void PPUCEffectsController::attachBrightnessControl(byte port, byte poti) {
+    brightnessControl[--port] = poti;
+}
+
+void PPUCEffectsController::setBrightness(byte port, byte brightness) {
+    ws2812FXDevices[--port][0]->getWS2812FX()->setBrightness(brightness);
+}
+
 void PPUCEffectsController::handleEvent(PPUCEvent* event) {
     for (int i = 0; i <= stackCounter; i++) {
         if (
@@ -148,6 +156,7 @@ void PPUCEffectsController::update() {
                     for (int k = 0; k < ws2812FXDeviceCounters[i]; k++) {
                         stop &= ws2812FXDevices[i][0]->isStopped();
                     }
+
                     if (stop) {
                         ws2812FXDevices[i][0]->getWS2812FX()->stop();
                         ws2812FXrunning[i] = false;
@@ -157,12 +166,30 @@ void PPUCEffectsController::update() {
                     for (int k = 0; k < ws2812FXDeviceCounters[i]; k++) {
                         stop &= ws2812FXDevices[i][0]->isStopped();
                     }
+
                     if (!stop) {
                         ws2812FXDevices[i][0]->getWS2812FX()->start();
                         ws2812FXrunning[i] = true;
                         ws2812FXDevices[i][0]->getWS2812FX()->service();
                     }
+                    else if (ws2812FXDevices[i][0]->hasAfterGlowSupport()) {
+                        // No other effect is running, handle after glow effect.
+                        ((PPUCCombinedGiAndLightMatrixWS2812FXDevice*) ws2812FXDevices[i][0])->updateAfterGlow();
+                    }
                 }
+            }
+        }
+    }
+
+    if (millis() - brightnessUpdateInterval > 100) {
+        // Don't update the brightness too often.
+        brightnessUpdateInterval = millis();
+        for (byte i = 0; i < 4; i++) {
+            brightnessReads[i] = analogRead(38 + i) / 4;
+        }
+        for (byte i = 0; i < 7; i++) {
+            if (brightnessControl[i] > 0) {
+                setBrightness(i + 1, brightnessReads[brightnessControl[i]]);
             }
         }
     }

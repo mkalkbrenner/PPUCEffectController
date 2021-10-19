@@ -51,6 +51,7 @@
 #include <Arduino.h>
 #include <PPUCEvent.h>
 #include <PPUCEventListener.h>
+#include <WavePWM.h>
 
 #include "PPUCWS2812FXDevice.h"
 #include "../PPUCInputDevices/PPUCGeneralIlluminationWPC.h"
@@ -62,7 +63,11 @@
 class PPUCCombinedGiAndLightMatrixWS2812FXDevice : public PPUCWS2812FXDevice, public PPUCEventListener {
 public:
 
-    PPUCCombinedGiAndLightMatrixWS2812FXDevice(WS2812FX* ws2812FX, int firstLED, int lastLED, int firstSegment, int lastSegment) : PPUCWS2812FXDevice(ws2812FX, firstLED, lastLED, firstSegment, lastSegment) {}
+    PPUCCombinedGiAndLightMatrixWS2812FXDevice(WS2812FX* ws2812FX, int firstLED, int lastLED, int firstSegment, int lastSegment) : PPUCWS2812FXDevice(ws2812FX, firstLED, lastLED, firstSegment, lastSegment) {
+        wavePWMHeatUp = new WavePWM();
+        wavePWMAfterGlow = new WavePWM();
+        afterGlowSupport = true;
+    }
 
     void on();
     void off();
@@ -79,7 +84,14 @@ public:
     void assignLedToLightMatrixDE(uint8_t number, uint8_t led);
     void assignLedToLightMatrixDE(uint8_t number, uint8_t led, uint32_t color);
 
+    void setHeatUp();
+    void setAfterGlow();
+
+    void setHeatUp(int ms);
+    void setAfterGlow(int ms);
+
     void handleEvent(PPUCEvent* event);
+    void updateAfterGlow();
 
 protected:
     uint8_t numLEDsGI[NUM_STRINGS] = {0};
@@ -93,9 +105,20 @@ protected:
     uint8_t ledLightMatrixPositions[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
     uint32_t ledLightMatrixColors[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
 
+    WavePWM* wavePWMHeatUp;
+    WavePWM* wavePWMAfterGlow;
+
     // When no effects are running, we're in normal GI and Light Matrix mode.
     bool stopped = false; // Never stop the updates.
     bool effectRunning = false;
+    bool wpc = false;
+
+    int msHeatUp = 0;
+    int msAfterGlow = 0;
+    int heatUpGI[NUM_STRINGS] = {0};
+    int afterGlowGI[NUM_STRINGS] = {0};
+    int heatUp[PPUC_LIGHT_MATRIX_SIZE] = {0};
+    int afterGlow[PPUC_LIGHT_MATRIX_SIZE] = {0};
 };
 
 #endif

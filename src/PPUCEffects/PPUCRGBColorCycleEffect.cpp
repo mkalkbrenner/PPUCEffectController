@@ -5,7 +5,6 @@ void PPUCRGBColorCycleEffect::update() {
     if (stage == 0) {
         color = 0xFF0000;
         device->on();
-        ws2812FX->setBrightness(255);
         ++stage;
     }
 

@@ -38,10 +38,9 @@
 
 #ifndef EFFECT_STACK_SIZE
 #define EFFECT_STACK_SIZE 50
+#endif
 
 #define WS2812FX_BRIGHTNESS 64
-
-#endif
 
 #if defined(PPUC_NUM_LEDS_1) && defined(PPUC_LED_TYPE_1)
     DMAMEM byte frameBuffer1[PPUC_NUM_LEDS_1 * ((PPUC_LED_TYPE_1 < 6) ? 3 : 4) * 4]; // 12 bytes per LED for RGB, 16 bytes for RGBW
@@ -235,6 +234,10 @@ public:
 
     void addEffect(PPUCEffectContainer* container);
 
+    void attachBrightnessControl(byte port, byte poti);
+
+    void setBrightness(byte port, byte brightness);
+
     void start();
 
     void update();
@@ -254,10 +257,13 @@ private:
     bool ws2812FXrunning[7] = {false, false, false, false, false, false, false};
     PPUCEffectContainer* stackEffectContainers[EFFECT_STACK_SIZE];
     int stackCounter = -1;
-
+    byte brightnessControl[7] = {0, 0, 0, 0, 0, 0, 0};
+    byte brightnessReads[4] = {0, 0, 0, 0};
     int mode = 0;
 
     unsigned long ws2812UpdateInterval = 0;
+    unsigned long brightnessUpdateInterval = 0;
+
     PPUCEffectControllerTestButtons* _testButtons;
     PPUCGeneralIlluminationWPC* _generalIllumintationWPC;
 };

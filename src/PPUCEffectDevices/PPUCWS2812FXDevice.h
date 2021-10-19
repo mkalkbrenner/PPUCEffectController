@@ -50,6 +50,10 @@ public:
         this->lastSegment = lastSegment;
     }
 
+    bool hasAfterGlowSupport() {
+        return afterGlowSupport;
+    };
+
 protected:
     WS2812FX* ws2812FX;
 
@@ -59,6 +63,8 @@ protected:
     int lastSegment;
 
     bool stopped = true;
+
+    bool afterGlowSupport = false;
 };
 
 #endif
