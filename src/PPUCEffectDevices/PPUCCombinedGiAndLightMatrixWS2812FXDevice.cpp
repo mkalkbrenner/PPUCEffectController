@@ -11,43 +11,44 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::off() {
     reset();
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToGiString(uint8_t giString, uint8_t led) {
-    assignLedToGiString(giString, led, WHITE);
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToGiString(uint8_t giString, int8_t led) {
+    assignLedToGiString(giString, led, ULTRAWHITE);
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToGiString(uint8_t giString, uint8_t led, uint32_t color) {
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToGiString(uint8_t giString, int8_t led, uint32_t color) {
     ledGIPositions[--giString][numLEDsGI[giString]] = led;
     ledGIColors[giString][numLEDsGI[giString]++] = color;
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrix(uint8_t column, uint8_t row, uint8_t led) {
-    assignLedToLightMatrix(column, row, led, WHITE);
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrix(uint8_t column, uint8_t row, int8_t led) {
+    assignLedToLightMatrix(column, row, led, ULTRAWHITE);
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrix(uint8_t column, uint8_t row, uint8_t led, uint32_t color) {
-    PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(((column - 1) * 8) + row , led, color);
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrix(uint8_t column, uint8_t row, int8_t led, uint32_t color) {
+    assignLedToLightMatrixDE(((column - 1) * 8) + row , led, color);
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixWPC(uint8_t number, uint8_t led) {
-    assignLedToLightMatrixWPC(number, led, WHITE);
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixWPC(uint8_t number, int8_t led) {
+    assignLedToLightMatrixWPC(number, led, ULTRAWHITE);
     wpc = true;
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixWPC(uint8_t number, uint8_t led, uint32_t color) {
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixWPC(uint8_t number, int8_t led, uint32_t color) {
     assignLedToLightMatrix(number / 10 % 10, number % 10, led, color);
     wpc = true;
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(uint8_t number, uint8_t led) {
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(uint8_t number, int8_t led) {
     assignLedToLightMatrixDE(number, led, WHITE);
 }
 
-void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(uint8_t number, uint8_t led, uint32_t color) {
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(uint8_t number, int8_t led, uint32_t color) {
     --number;
     for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
-        if (ledLightMatrixPositions[number][i] == 0) {
+        if (ledLightMatrixPositions[number][i] == -1) {
             ledLightMatrixPositions[number][i] = led;
             ledLightMatrixColors[number][i] = color;
+            break;
         }
     }
 }
@@ -56,7 +57,7 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::handleEvent(PPUCEvent* event) {
     if (!effectRunning) {
         if (event->sourceId == EVENT_SOURCE_GI) {
             uint8_t giString = event->eventId - 1;
-            uint8_t brightness = event->value > 0 ? 1 << event->value : 0; // 2^value
+            uint8_t giBrightness = event->value > 0 ? 1 << event->value : 0; // 2^value
             for (int i = 0; i <= numLEDsGI[giString]; i++) {
                 // @todo apply WPC GI brightness.
                 ws2812FX->setPixelColor(ledGIPositions[giString][i], ledGIColors[giString][i]);
@@ -79,19 +80,18 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::handleEvent(PPUCEvent* event) {
             bool on = (bool) event->value;
 
             for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
-                if (ledLightMatrixPositions[number][i]) {
-                    if (on && !msHeatUp) {
+                if (ledLightMatrixPositions[number][i] >= 0) {
+                    if (on && msHeatUp == 0) {
                         ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], ledLightMatrixColors[number][i]);
                     }
-                    else if (!on && !msAfterGlow) {
-                        ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], 0);
+                    else if (!on && msAfterGlow == 0) {
+                        ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], RGBW_BLACK);
                     }
                     else if (i == 0) {
                         if (on) {
                             if (heatUp[number] == 0 && afterGlow[number] == 0) {
                                 heatUp[number] = millis();
-                            }
-                            else if (afterGlow[number] > 0) {
+                            } else if (afterGlow[number] > 0) {
                                 // There's still an after glow effect running. Start heat up from current value.
                                 byte value = wavePWMAfterGlow->getExponentialValue(millis() - afterGlow[number] + msAfterGlow);
                                 afterGlow[number] = 0;
@@ -106,12 +106,10 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::handleEvent(PPUCEvent* event) {
                                     heatUp[number] = millis() - msHeatUp + 1;
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             if (afterGlow[number] == 0 && heatUp[number] == 0) {
                                 afterGlow[number] = millis();
-                            }
-                            else if (heatUp[number] > 0) {
+                            } else if (heatUp[number] > 0) {
                                 // There's still a heat up effect running. Start after glow from current value.
                                 byte value = wavePWMHeatUp->getExponentialValue(millis() - heatUp[number]);
                                 heatUp[number] = 0;
@@ -127,6 +125,9 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::handleEvent(PPUCEvent* event) {
                                 }
                             }
                         }
+
+                        // terminate the loop
+                        return;
                     }
                 }
             }
@@ -136,33 +137,52 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::handleEvent(PPUCEvent* event) {
 
 void PPUCCombinedGiAndLightMatrixWS2812FXDevice::updateAfterGlow() {
     for (int number = 0; number < PPUC_LIGHT_MATRIX_SIZE; number++) {
-        byte factor = 255;
+        byte glowBrightness;
         if (heatUp[number] > 0) {
             if ((millis() - heatUp[number]) >= msHeatUp) {
                 heatUp[number] = 0;
+                for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
+                    if (ledLightMatrixPositions[number][i] != -1) {
+                        ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], ledLightMatrixColors[number][i]);
+                    }
+                }
             }
             else {
-                factor = wavePWMHeatUp->getExponentialValue(millis() - heatUp[number]);
+                glowBrightness = wavePWMHeatUp->getExponentialValue(millis() - heatUp[number]);
             }
         }
         else if (afterGlow[number] > 0) {
             if ((millis() - afterGlow[number]) >= msAfterGlow) {
                 afterGlow[number] = 0;
-                factor = 0;
+                for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
+                    if (ledLightMatrixPositions[number][i] != -1) {
+                        ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], RGBW_BLACK);
+                    }
+                }
             }
             else {
-                factor = wavePWMAfterGlow->getExponentialValue(millis() - afterGlow[number] + msAfterGlow);
+                glowBrightness = wavePWMAfterGlow->getExponentialValue(millis() - afterGlow[number] + msAfterGlow);
             }
-
         }
 
-        for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
-            // uint8_t w = (ledLightMatrixColors[number][i] >> 24) & 0xFF;
-            uint8_t r = ((ledLightMatrixColors[number][i] >> 16) & 0xFF) * factor / 255;
-            uint8_t g = ((ledLightMatrixColors[number][i] >> 8) & 0xFF) * factor / 255;
-            uint8_t b = (ledLightMatrixColors[number][i] & 0xFF) * factor / 255;
+        if (heatUp[number] > 0 || afterGlow[number] > 0) {
+            for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
+                if (ledLightMatrixPositions[number][i] != -1) {
+                    uint8_t w = (ledLightMatrixColors[number][i] >> 24) & 0xFF;
+                    uint8_t r = (ledLightMatrixColors[number][i] >> 16) & 0xFF;
+                    uint8_t g = (ledLightMatrixColors[number][i] >> 8) & 0xFF;
+                    uint8_t b = ledLightMatrixColors[number][i] & 0xFF;
 
-            ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], r, g, b /*, w*/);
+                    // uint32_t for more space during the operation
+                    uint32_t mult = (glowBrightness * getBrightness() / 255) + 1;
+                    b = (b * mult) >> 8;
+                    g = (g * mult) >> 8;
+                    r = (r * mult) >> 8;
+                    w = (w * mult) >> 8;
+
+                    ws2812FX->setPixelColor(ledLightMatrixPositions[number][i], r, g, b, w);
+                }
+            }
         }
     }
 }

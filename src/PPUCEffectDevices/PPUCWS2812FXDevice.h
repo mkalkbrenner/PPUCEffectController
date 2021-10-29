@@ -45,6 +45,9 @@ public:
 
     bool isStopped();
 
+    void setBrightness(byte b);
+    byte getBrightness();
+
     void _reduceLEDs(int lastLED, int lastSegment) {
         this->lastLED = lastLED;
         this->lastSegment = lastSegment;
@@ -62,8 +65,9 @@ protected:
     int firstSegment;
     int lastSegment;
 
-    bool stopped = true;
+    byte brightness = 64;
 
+    bool stopped = true;
     bool afterGlowSupport = false;
 };
 

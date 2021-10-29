@@ -67,22 +67,32 @@ public:
         wavePWMHeatUp = new WavePWM();
         wavePWMAfterGlow = new WavePWM();
         afterGlowSupport = true;
+        for (int number = 0; number < NUM_STRINGS; number++) {
+            for (int i = 0; i < PPUC_MAX_LEDS_GI_STRING; i++) {
+                ledGIPositions[number][i] = -1;
+            }
+        }
+        for (int number = 0; number < PPUC_LIGHT_MATRIX_SIZE; number++) {
+            for (int i = 0; i < PPUC_MAX_LEDS_PER_LIGHT; i++) {
+                ledLightMatrixPositions[number][i] = -1;
+            }
+        }
     }
 
     void on();
     void off();
 
-    void assignLedToGiString(uint8_t giString, uint8_t led);
-    void assignLedToGiString(uint8_t giString, uint8_t led, uint32_t color);
+    void assignLedToGiString(uint8_t giString, int8_t led);
+    void assignLedToGiString(uint8_t giString, int8_t led, uint32_t color);
 
-    void assignLedToLightMatrix(uint8_t column, uint8_t row, uint8_t led);
-    void assignLedToLightMatrix(uint8_t column, uint8_t row, uint8_t led, uint32_t color);
+    void assignLedToLightMatrix(uint8_t column, uint8_t row, int8_t led);
+    void assignLedToLightMatrix(uint8_t column, uint8_t row, int8_t led, uint32_t color);
 
-    void assignLedToLightMatrixWPC(uint8_t number, uint8_t led);
-    void assignLedToLightMatrixWPC(uint8_t number, uint8_t led, uint32_t color);
+    void assignLedToLightMatrixWPC(uint8_t number, int8_t led);
+    void assignLedToLightMatrixWPC(uint8_t number, int8_t led, uint32_t color);
 
-    void assignLedToLightMatrixDE(uint8_t number, uint8_t led);
-    void assignLedToLightMatrixDE(uint8_t number, uint8_t led, uint32_t color);
+    void assignLedToLightMatrixDE(uint8_t number, int8_t led);
+    void assignLedToLightMatrixDE(uint8_t number, int8_t led, uint32_t color);
 
     void setHeatUp();
     void setAfterGlow();
@@ -97,12 +107,12 @@ protected:
     uint8_t numLEDsGI[NUM_STRINGS] = {0};
     uint8_t numLEDsLightMatrix = 0;
 
-    uint8_t ledGIPositions[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
+    int8_t ledGIPositions[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
     uint32_t ledGIColors[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
 
     // Internally we store the positions in Data East numbering from 1 to 64.
     // The WPC-specific functions convert the WPC-specific numbering.
-    uint8_t ledLightMatrixPositions[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
+    int8_t ledLightMatrixPositions[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
     uint32_t ledLightMatrixColors[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
 
     WavePWM* wavePWMHeatUp;

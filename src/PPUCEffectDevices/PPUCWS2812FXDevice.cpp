@@ -45,3 +45,13 @@ int PPUCWS2812FXDevice::getNumSegments() {
 bool PPUCWS2812FXDevice::isStopped() {
     return stopped;
 }
+
+void PPUCWS2812FXDevice::setBrightness(byte b) {
+    brightness = b;
+    ws2812FX->setBrightness(brightness);
+}
+
+byte PPUCWS2812FXDevice::getBrightness() {
+    return brightness;
+}
+

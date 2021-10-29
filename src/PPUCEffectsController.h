@@ -106,7 +106,7 @@ public:
                 );
                 ws2812FXDevices[0][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[0][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[0][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[0][0]->off();
                 ws2812FXstates[0] = true;
             #endif
@@ -120,7 +120,7 @@ public:
                 );
                 ws2812FXDevices[1][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[1][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[1][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[1][0]->off();
                 ws2812FXstates[1] = true;
             #endif
@@ -134,7 +134,7 @@ public:
                 );
                 ws2812FXDevices[2][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[2][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[2][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[2][0]->off();
                 ws2812FXstates[2] = true;
             #endif
@@ -148,7 +148,7 @@ public:
                 );
                 ws2812FXDevices[3][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[3][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[3][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[3][0]->off();
                 ws2812FXstates[3] = true;
             #endif
@@ -162,7 +162,7 @@ public:
                 );
                 ws2812FXDevices[4][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[4][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[4][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[4][0]->off();
                 ws2812FXstates[4] = true;
             #endif
@@ -176,7 +176,7 @@ public:
                 );
                 ws2812FXDevices[5][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[5][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[5][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[5][0]->off();
                 ws2812FXstates[5] = true;
             #endif
@@ -190,7 +190,7 @@ public:
                 );
                 ws2812FXDevices[6][0]->getWS2812FX()->init();
                 // Brightness will be set via potentiometer later.
-                ws2812FXDevices[6][0]->getWS2812FX()->setBrightness(WS2812FX_BRIGHTNESS);
+                ws2812FXDevices[6][0]->setBrightness(WS2812FX_BRIGHTNESS);
                 ws2812FXDevices[6][0]->off();
                 ws2812FXstates[6] = true;
             #endif
@@ -262,6 +262,7 @@ private:
     int mode = 0;
 
     unsigned long ws2812UpdateInterval = 0;
+    unsigned long ws2812AfterGlowUpdateInterval = 0;
     unsigned long brightnessUpdateInterval = 0;
 
     PPUCEffectControllerTestButtons* _testButtons;

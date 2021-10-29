@@ -45,7 +45,7 @@ PPUCCombinedGiAndLightMatrixWS2812FXDevice* PPUCEffectsController::createCombine
 
     giAndLightMatrix->off();
 
-    ws2812FXDevices[--port][0] = giAndLightMatrix;
+    ws2812FXDevices[port][0] = giAndLightMatrix;
     delete ws2812FXDevice;
 
     _eventDispatcher->addListener(giAndLightMatrix, EVENT_SOURCE_GI);
@@ -96,7 +96,7 @@ void PPUCEffectsController::attachBrightnessControl(byte port, byte poti) {
 }
 
 void PPUCEffectsController::setBrightness(byte port, byte brightness) {
-    ws2812FXDevices[--port][0]->getWS2812FX()->setBrightness(brightness);
+    ws2812FXDevices[--port][0]->setBrightness(brightness);
 }
 
 void PPUCEffectsController::handleEvent(PPUCEvent* event) {
@@ -143,7 +143,7 @@ void PPUCEffectsController::update() {
     }
 
     if (millis() - ws2812UpdateInterval > 10) {
-        // Updating the LEDs too fast leads to undefined behavior. Just update every 10ms.
+        // Updating the LEDs too fast leads to undefined behavior. Just update effects every 10ms.
         ws2812UpdateInterval = millis();
 
         for (int i = 0; i <= 6; i++) {
@@ -172,11 +172,19 @@ void PPUCEffectsController::update() {
                         ws2812FXrunning[i] = true;
                         ws2812FXDevices[i][0]->getWS2812FX()->service();
                     }
-                    else if (ws2812FXDevices[i][0]->hasAfterGlowSupport()) {
-                        // No other effect is running, handle after glow effect.
-                        ((PPUCCombinedGiAndLightMatrixWS2812FXDevice*) ws2812FXDevices[i][0])->updateAfterGlow();
-                    }
                 }
+            }
+        }
+    }
+
+    if (millis() - ws2812AfterGlowUpdateInterval > 3) {
+        // Updating the LEDs too fast leads to undefined behavior. Just update every 3ms.
+        ws2812AfterGlowUpdateInterval = millis();
+        for (int i = 0; i <= 6; i++) {
+            if (ws2812FXstates[i] && ws2812FXDevices[i][0]->hasAfterGlowSupport() && !ws2812FXrunning[i]) {
+                // No other effect is running, handle after glow effect.
+                ((PPUCCombinedGiAndLightMatrixWS2812FXDevice *) ws2812FXDevices[i][0])->updateAfterGlow();
+                ws2812FXDevices[i][0]->getWS2812FX()->show();
             }
         }
     }
