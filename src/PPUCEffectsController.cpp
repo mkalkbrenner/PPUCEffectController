@@ -142,8 +142,8 @@ void PPUCEffectsController::update() {
         }
     }
 
-    if (millis() - ws2812UpdateInterval > 10) {
-        // Updating the LEDs too fast leads to undefined behavior. Just update effects every 10ms.
+    if (millis() - ws2812UpdateInterval > UPDATE_INTERVAL_WS2812FX_EFFECTS) {
+        // Updating the LEDs too fast leads to undefined behavior. Just update effects every 3ms.
         ws2812UpdateInterval = millis();
 
         for (int i = 0; i <= 6; i++) {
@@ -177,7 +177,7 @@ void PPUCEffectsController::update() {
         }
     }
 
-    if (millis() - ws2812AfterGlowUpdateInterval > 3) {
+    if (millis() - ws2812AfterGlowUpdateInterval > UPDATE_INTERVAL_WS2812FX_AFTERGLOW) {
         // Updating the LEDs too fast leads to undefined behavior. Just update every 3ms.
         ws2812AfterGlowUpdateInterval = millis();
         for (int i = 0; i <= 6; i++) {
@@ -189,7 +189,7 @@ void PPUCEffectsController::update() {
         }
     }
 
-    if (millis() - brightnessUpdateInterval > 100) {
+    if (millis() - brightnessUpdateInterval > UPDATE_INTERVAL_WS2812FX_BRIGHTNESS) {
         // Don't update the brightness too often.
         brightnessUpdateInterval = millis();
         for (byte i = 0; i < 4; i++) {
