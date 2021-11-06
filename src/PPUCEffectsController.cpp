@@ -81,6 +81,10 @@ PPUCWS2812FXDevice* PPUCEffectsController::ws2812FXDevice(int port, int number) 
     return ws2812FXDevices[--port][number];
 }
 
+PPUCGeneralIlluminationWPC* PPUCEffectsController::generalIllumintationWPC() {
+    return _generalIllumintationWPC;
+}
+
 void PPUCEffectsController::addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode) {
     addEffect(new PPUCEffectContainer(effect, device, event, priority, repeat, mode));
 }

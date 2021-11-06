@@ -232,6 +232,8 @@ public:
 
     PPUCWS2812FXDevice* ws2812FXDevice(int port, int number);
 
+    PPUCGeneralIlluminationWPC* generalIllumintationWPC();
+
     void addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEvent* event, int priority, int repeat, int mode);
 
     //void addEffect(PPUCEffect* effect, PPUCEffectDevice* device, PPUCEventSequence* sequence, int priority, int repeat);

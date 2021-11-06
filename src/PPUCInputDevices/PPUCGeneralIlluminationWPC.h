@@ -27,9 +27,10 @@
 // The WPC CPU issues a short signal to turn on the triac controlling the
 // AC voltage. The Triac will stay on until the next zero crossing of the
 // AC signal.
-// The closer the signal is to the zero crossing, the brighter the lamps
+// The closer the next signal is to the zero crossing, the brighter the lamps
 // will be. If no signal is issued at all (stays high), the lamps will light
-// at full power. If the signal remains low, the lamps are turned off.
+// at full power (brightness level 8). If the signal remains low, the lamps
+// are turned off.
 // The zero crossing signal is issued with twice the AC frequency, i.e. with
 // 100Hz or every 10ms in Europe.
 // The scope says the ZC signal is 1ms long while the Triac signal is only
@@ -50,7 +51,7 @@
 // Setup
 
 // Number of GI strings
-#define NUM_STRINGS 5
+#define NUM_GI_STRINGS 5
 
 // Number of brightness steps
 #define NUM_BRIGHTNESS 8
@@ -68,6 +69,7 @@ class PPUCGeneralIlluminationWPC {
 public:
     PPUCGeneralIlluminationWPC(PPUCEventDispatcher *eD) {
         giInstance = this;
+        eventDispatcher = eD;
 
         pinMode(2, INPUT);
         pinMode(3, INPUT);
@@ -93,16 +95,16 @@ public:
 
     volatile uint32_t sZCIntTime = 0;
     volatile uint8_t sInterruptsSeen = 0;
+    volatile uint32_t sDataIntLast[NUM_GI_STRINGS] = {0};
 
 protected:
     uint8_t dtToBrightness(uint32_t dt);
 
     PPUCEventDispatcher* eventDispatcher;
 
-    uint32_t sDataIntLast[NUM_STRINGS] = {0};
-    uint8_t sBrightness[NUM_STRINGS] = {0};
-    uint8_t sBrightnessTarget[NUM_STRINGS] = {0};
-    uint8_t sBrightnessHist[NUM_STRINGS][NUM_BRIGHTNESS + 1]; // including 0 for 'off'
+    uint8_t sBrightness[NUM_GI_STRINGS] = {0};
+    uint8_t sBrightnessTarget[NUM_GI_STRINGS] = {0};
+    uint8_t sBrightnessHist[NUM_GI_STRINGS][NUM_BRIGHTNESS + 1]; // including 0 for 'off'
 
 private:
     static PPUCGeneralIlluminationWPC *giInstance;

@@ -67,7 +67,7 @@ public:
         wavePWMHeatUp = new WavePWM();
         wavePWMAfterGlow = new WavePWM();
         afterGlowSupport = true;
-        for (int number = 0; number < NUM_STRINGS; number++) {
+        for (int number = 0; number < NUM_GI_STRINGS; number++) {
             for (int i = 0; i < PPUC_MAX_LEDS_GI_STRING; i++) {
                 ledGIPositions[number][i] = -1;
             }
@@ -94,6 +94,8 @@ public:
     void assignLedToLightMatrixDE(uint8_t number, int8_t led);
     void assignLedToLightMatrixDE(uint8_t number, int8_t led, uint32_t color);
 
+    void setDimmedPixelColor(int led, uint32_t color, uint8_t brightness);
+
     void setHeatUp();
     void setAfterGlow();
 
@@ -104,15 +106,16 @@ public:
     void updateAfterGlow();
 
 protected:
-    uint8_t numLEDsGI[NUM_STRINGS] = {0};
-    uint8_t numLEDsLightMatrix = 0;
+    uint8_t numLEDsGI[NUM_GI_STRINGS] = {0};
 
-    int8_t ledGIPositions[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
-    uint32_t ledGIColors[NUM_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
+    int16_t ledGIPositions[NUM_GI_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
+    uint32_t ledGIColors[NUM_GI_STRINGS][PPUC_MAX_LEDS_GI_STRING] = {{0}};
+    uint8_t sourceGIBrightness[NUM_GI_STRINGS] = {0};
+    uint8_t targetGIBrightness[NUM_GI_STRINGS] = {0};
 
     // Internally we store the positions in Data East numbering from 1 to 64.
     // The WPC-specific functions convert the WPC-specific numbering.
-    int8_t ledLightMatrixPositions[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
+    int16_t ledLightMatrixPositions[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
     uint32_t ledLightMatrixColors[PPUC_LIGHT_MATRIX_SIZE][PPUC_MAX_LEDS_PER_LIGHT] = {{0}};
 
     WavePWM* wavePWMHeatUp;
@@ -123,12 +126,12 @@ protected:
     bool effectRunning = false;
     bool wpc = false;
 
-    int msHeatUp = 0;
-    int msAfterGlow = 0;
-    int heatUpGI[NUM_STRINGS] = {0};
-    int afterGlowGI[NUM_STRINGS] = {0};
-    int heatUp[PPUC_LIGHT_MATRIX_SIZE] = {0};
-    int afterGlow[PPUC_LIGHT_MATRIX_SIZE] = {0};
+    int16_t msHeatUp = 0;
+    int16_t msAfterGlow = 0;
+    uint32_t heatUpGI[NUM_GI_STRINGS] = {0};
+    uint32_t afterGlowGI[NUM_GI_STRINGS] = {0};
+    uint32_t heatUp[PPUC_LIGHT_MATRIX_SIZE] = {0};
+    uint32_t afterGlow[PPUC_LIGHT_MATRIX_SIZE] = {0};
 };
 
 #endif
