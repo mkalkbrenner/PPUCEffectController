@@ -25,7 +25,7 @@
 // ---+----+----+----+----+----+----+----+----
 // R8 | 18 | 28 | 38 | 48 | 58 | 68 | 78 | 88
 
-// DE matrix numbering:
+// DE and SYS11 matrix numbering:
 //
 //    | C1 | C2 | C3 | C4 | C5 | C6 | C7 | C8
 // ---+----+----+----+----+----+----+----+----
@@ -93,6 +93,9 @@ public:
 
     void assignLedToLightMatrixDE(uint8_t number, int8_t led);
     void assignLedToLightMatrixDE(uint8_t number, int8_t led, uint32_t color);
+
+    void assignLedToLightMatrixSYS11(uint8_t number, int8_t led);
+    void assignLedToLightMatrixSYS11(uint8_t number, int8_t led, uint32_t color);
 
     void setDimmedPixelColor(int led, uint32_t color, uint8_t brightness);
 

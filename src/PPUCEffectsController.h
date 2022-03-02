@@ -33,9 +33,6 @@
 #include "PPUCEffects/PPUCRampDownStopPWMEffect.h"
 #include "PPUCEffects/PPUCSinePWMEffect.h"
 
-#define PINBALL_TYPE_DATA_EAST 1
-#define PINBALL_TYPE_WPC 2
-
 #ifndef EFFECT_STACK_SIZE
 #define EFFECT_STACK_SIZE 128
 #endif
@@ -200,7 +197,7 @@ public:
             #endif
             _testButtons = new PPUCEffectControllerTestButtons(_eventDispatcher);
 
-            if (pinballType == PINBALL_TYPE_WPC) {
+            if (pinballType == PLATFORM_WPC) {
                 _generalIllumintationWPC = new PPUCGeneralIlluminationWPC(_eventDispatcher);
                 _generalIllumintationWPC->start();
             }

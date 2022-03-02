@@ -40,8 +40,16 @@ void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixWPC(uint8
     wpc = true;
 }
 
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixSYS11(uint8_t number, int8_t led) {
+    assignLedToLightMatrixDE(number, led, ULTRAWHITE);
+}
+
+void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixSYS11(uint8_t number, int8_t led, uint32_t color) {
+    assignLedToLightMatrixDE(number, led, color);
+}
+
 void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(uint8_t number, int8_t led) {
-    assignLedToLightMatrixDE(number, led, WHITE);
+    assignLedToLightMatrixDE(number, led, ULTRAWHITE);
 }
 
 void PPUCCombinedGiAndLightMatrixWS2812FXDevice::assignLedToLightMatrixDE(uint8_t number, int8_t led, uint32_t color) {
